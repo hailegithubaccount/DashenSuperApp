@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// Screens/ReusablePaymentScreen.js
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,16 +8,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  TextInput,
   Keyboard,
   TouchableWithoutFeedback,
-  Touchable,
   TouchableOpacity,
   Switch,
-  PanResponder,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
 import OtherBanktopbar from '../Components/otherBanktopbar';
 import AccountSelector from '../Components/reusedSelectAccount';
 import Colors from '../Components/Colors';
@@ -24,36 +21,33 @@ import CustomButton from '../Components/CustomButton';
 import CustomTextInput from '../Components/TextInput';
 import NextButtonWithModal from '../Components/nextButtonwithModal';
 
-const PaymentScreen = ({ 
-    
-    route, 
-    navigation, 
-    ShowModal = true,
-    ShowButton=true,
-    ShowNextButtonWithModal=false
- }) => {
-  const { amount: scannedAmount, recipient } = route.params || {};
+const ReusablePaymentScreen = ({
+  route = {}, // ✅ default fallback
+  navigation,
+  showModal = true,
+  showButton = true,
+  ShowTipBox=false,
+  showNextButtonWithModal = false,
+  title = 'QR Payment', // ✅ dynamic title
+  targetScreen = 'ConfirmTransfer', // ✅ dynamic target
+}) => {
+  const { amount: scannedAmount = '0.00', recipient = {} } = route.params || {};
+
   const [account, setAccount] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(prev => !prev);
-
-  const openPinModal = () => {
-    setModalVisible(true);
-  };
   const [inputValue, setInputValue] = useState('');
+
+  const presetPrices = ['10.00', '25.00', '50.00', '100.00'];
+
+  const toggleSwitch = () => setIsEnabled(prev => !prev);
+  const openPinModal = () => setModalVisible(true);
 
   useFocusEffect(
     useCallback(() => {
       setModalVisible(false);
     }, []),
   );
-
-  const presetPrices = ['10.00', '25.00', '50.00', '100.00'];
-
-  const handleBoxPress = (price: React.SetStateAction<string>) => {
-    setInputValue(price);
-  };
 
   return (
     <KeyboardAvoidingView
@@ -62,9 +56,9 @@ const PaymentScreen = ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <OtherBanktopbar title="QR Payment" />
+          {/* ✅ Dynamic Title */}
+          <OtherBanktopbar title={title} />
 
-          {/* Scrollable Content */}
           <ScrollView
             style={{ marginHorizontal: 16 }}
             contentContainerStyle={{ paddingBottom: 120 }}
@@ -88,6 +82,31 @@ const PaymentScreen = ({
               />
 
               <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
+
+              {/* {ShowTipBox &&( */}
+
+              {/* this is used for displaying the tipbox or not */}
+
+              {ShowTipBox && (
+                <View
+                  style={{
+                    backgroundColor: 'red',
+                    width: 100,
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    borderRadius: 20,
+                    paddingVertical: 6,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <Text style={{}}>Tip Amount</Text>
+                  <Text>+ 100</Text>
+                </View>
+              )}
+
+              {/* )
+              } */}
+
               <Text style={{ alignSelf: 'center', color: '#929292' }}>
                 Available in Main Account:{' '}
                 <Text style={{ color: Colors.primary, fontWeight: 'bold' }}>
@@ -97,19 +116,20 @@ const PaymentScreen = ({
             </View>
           </ScrollView>
 
-          {ShowButton && (
+          {/* Bottom Next Button */}
+          {showButton && (
             <View style={styles.bottomButton}>
               <CustomButton title="Next" onPress={openPinModal} width="95%" />
             </View>
           )}
 
-          {ShowModal && (
+          {/* Tip Modal */}
+          {showModal && (
             <Modal
               visible={modalVisible}
               transparent
               animationType="slide"
               onRequestClose={() => setModalVisible(false)}
-              // onBackdropPress={() => setModalVisible(false)}
             >
               <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -129,27 +149,14 @@ const PaymentScreen = ({
                           <Text style={{ fontSize: 20, color: Colors.primary }}>
                             Give A Tip
                           </Text>
-                          <TouchableOpacity style={styles.skip}>
-                            <Text
-                              style={{
-                                paddingHorizontal: 12,
-                                paddingVertical: 5,
-                                borderRadius: 10,
-                                backgroundColor: '#F0F4FF',
-                              }}
-                            >
-                              skip
-                            </Text>
+                          <TouchableOpacity
+                            onPress={() => setModalVisible(false)}
+                          >
+                            <Text style={styles.skipBtn}>skip</Text>
                           </TouchableOpacity>
                         </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            gap: 6,
-                            alignItems: 'center',
-                            marginVertical: 10,
-                          }}
-                        >
+
+                        <View style={styles.switchRow}>
                           <Text style={{ fontSize: 16 }}>
                             Tip selection on Transfers
                           </Text>
@@ -159,30 +166,19 @@ const PaymentScreen = ({
                               true: Colors.primary,
                             }}
                             thumbColor={'#f4f3f4'}
-                            ios_backgroundColor="#3e3e3e"
                             onValueChange={toggleSwitch}
                             value={isEnabled}
                           />
                         </View>
 
-                        <View
-                          style={{
-                            backgroundColor: '#F0F4FF',
-                            borderRadius: 15,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              marginHorizontal: 10,
-                            }}
-                          >
+                        <View style={styles.tipBox}>
+                          <Text style={{ marginHorizontal: 10 }}>
                             Custom Tip
                           </Text>
                           <CustomTextInput
-                            label={null}
                             placeholder={'0.00'}
                             keyboardType="numeric"
-                            value={String(inputValue)} // ensure it's always a string
+                            value={String(inputValue)}
                             onChangeText={text => setInputValue(text)}
                             borderRadius={20}
                             marginTop={5}
@@ -195,7 +191,7 @@ const PaymentScreen = ({
                                   styles.priceBox,
                                   inputValue === price && styles.selectedBox,
                                 ]}
-                                onPress={() => setInputValue(price)} // ✅ directly update input
+                                onPress={() => setInputValue(price)}
                               >
                                 <Text
                                   style={[
@@ -216,7 +212,7 @@ const PaymentScreen = ({
                           selectedAccount={account}
                           recipient={recipient}
                           navigation={navigation}
-                          tragetScreen="ConfirmTransfer"
+                          tragetScreen={targetScreen}
                           marginTop={1}
                         />
                       </View>
@@ -227,19 +223,18 @@ const PaymentScreen = ({
             </Modal>
           )}
 
-          {ShowNextButtonWithModal &&(
+          {/* Inline Next Button */}
+          {showNextButtonWithModal && (
             <NextButtonWithModal
-            typedAmount={null}
-            scannedAmount={scannedAmount}
-            selectedAccount={account}
-            recipient={recipient}
-            navigation={navigation}
-            tragetScreen="ConfirmTransfer"
-            marginTop={1}
-          />
+              typedAmount={null}
+              scannedAmount={scannedAmount}
+              selectedAccount={account}
+              recipient={recipient}
+              navigation={navigation}
+              tragetScreen={targetScreen}
+              marginTop={1}
+            />
           )}
-
-          
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -272,18 +267,27 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    fontSize: 18,
-  },
   buttonwithtext: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  skip: {},
+  skipBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: '#F0F4FF',
+  },
+  switchRow: {
+    flexDirection: 'row',
+    gap: 6,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  tipBox: {
+    backgroundColor: '#F0F4FF',
+    borderRadius: 15,
+    marginVertical: 10,
+  },
   boxesContainer: {
     flexDirection: 'row',
     gap: 5,
@@ -295,22 +299,22 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     width: '24%',
     height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectedBox: {
-    borderColor: '#007bff', // Change border color for selected box
+    borderColor: '#007bff',
     backgroundColor: '#e6f2ff',
   },
   priceText: {
     fontSize: 13,
     color: Colors.primary,
     fontWeight: '600',
-    paddingVertical: 10,
-    paddingHorizontal: 2,
   },
   selectedText: {
-    color: '#007bff', // Change text color for selected box
+    color: '#007bff',
     fontWeight: 'bold',
   },
 });
 
-export default PaymentScreen;
+export default ReusablePaymentScreen;

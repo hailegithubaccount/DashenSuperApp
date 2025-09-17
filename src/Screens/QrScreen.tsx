@@ -50,6 +50,7 @@ const QrScreen: React.FC = () => {
           );
 
           const amount = parsed.amount ? parseFloat(parsed.amount) : null;
+          const tip = parsed.tip ? parseFloat(parsed.tip) : null;
           const recipientName = parsed.recipientName;
           const recipientAccount = parsed.recipientAccount;
 
@@ -61,6 +62,15 @@ const QrScreen: React.FC = () => {
             // ✅ Case 1: QR contains amount → go to PaymentScreen
             navigation.navigate('QrWithAmount', {
               amount,
+              recipient: {
+                holder: recipientName,
+                AccountNumber: recipientAccount,
+              },
+            });
+          } else if (amount && !isNaN(amount) && tip && !isNaN(tip)) {
+            navigation.navigate('QRTipWithAmount', {
+              amount,
+              tip,
               recipient: {
                 holder: recipientName,
                 AccountNumber: recipientAccount,
