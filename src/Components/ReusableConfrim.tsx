@@ -31,7 +31,7 @@ const ConfirmBaseScreen = ({
 
 
 
-
+  
   // used when confirmAction === 'navigate'
   navigateTo,
 
@@ -125,12 +125,12 @@ const ConfirmBaseScreen = ({
         tip,
       };
 
-      // if (typeof onConfirmed === 'function') {
-      //   onConfirmed(paramsToPass);
-      // } else {
+      if (typeof onConfirmed === 'function') {
+        onConfirmed(paramsToPass);
+      } else {
         // fallback default: navigate to SuccessfulTransaction
         navigation.navigate('SuccessfulTransaction', paramsToPass);
-      // }
+      }
     }, 300);
   };
 
@@ -141,7 +141,8 @@ const ConfirmBaseScreen = ({
       return;
     }
 
-    // navigate flow
+    else{
+      // navigate flow
     const paramsToPass = {
       amount,
       recipientAccount,
@@ -157,6 +158,11 @@ const ConfirmBaseScreen = ({
       // fallback: same as modal success fallback
       navigation.navigate('SuccessfulTransaction', paramsToPass);
     }
+
+
+    }
+
+    
   };
 
   return (
