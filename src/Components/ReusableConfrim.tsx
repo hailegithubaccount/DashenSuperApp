@@ -27,18 +27,8 @@ const ConfirmBaseScreen = ({
   // confirmAction: 'modal' | 'navigate'
   confirmAction = 'modal',
 
-
-
-
-
-  
   // used when confirmAction === 'navigate'
   navigateTo,
-
-
-
-
-
 
   // used when confirmAction === 'modal' (called after successful PIN)
   onConfirmed, // function({ amount, recipientAccount, recipientName, isBudgetEnabled, reason, tip })
@@ -139,30 +129,24 @@ const ConfirmBaseScreen = ({
     if (confirmAction === 'modal') {
       openPinModal();
       return;
-    }
-
-    else{
-      // navigate flow
-    const paramsToPass = {
-      amount,
-      recipientAccount,
-      recipientName,
-      isBudgetEnabled,
-      reason,
-      tip,
-    };
-
-    if (navigateTo) {
-      navigation.navigate(navigateTo, paramsToPass);
     } else {
-      // fallback: same as modal success fallback
-      navigation.navigate('SuccessfulTransaction', paramsToPass);
+      // navigate flow
+      const paramsToPass = {
+        amount,
+        recipientAccount,
+        recipientName,
+        isBudgetEnabled,
+        reason,
+        tip,
+      };
+
+      if (navigateTo) {
+        navigation.navigate(navigateTo, paramsToPass);
+      } else {
+        // fallback: same as modal success fallback
+        navigation.navigate('SuccessfulTransaction', paramsToPass);
+      }
     }
-
-
-    }
-
-    
   };
 
   return (
@@ -453,7 +437,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 18,
   },
-  row: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
   key: {
     flex: 1,
     marginHorizontal: 5,

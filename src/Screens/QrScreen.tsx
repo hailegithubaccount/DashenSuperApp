@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import {
   Camera,
@@ -43,10 +44,10 @@ const QrScreen: React.FC = () => {
         setIsScanning(false);
 
         try {
-          // Expect QR code data in format: amount:100;recipientName:John Doe;recipientAccount:1234567890
+          // Expect QR data like: amount:100;tip:5;recipientName:John Doe;recipientAccount:1234567890
           const data = code.value;
           const parsed = Object.fromEntries(
-            data.split(';').map(pair => pair.split(':')),
+            data.split(';').map(pair => pair.split(':'))
           );
 
           const amount = parsed.amount ? parseFloat(parsed.amount) : null;
@@ -58,16 +59,8 @@ const QrScreen: React.FC = () => {
             throw new Error('Invalid QR');
           }
 
-          if (amount && !isNaN(amount)) {
-            // ✅ Case 1: QR contains amount → go to PaymentScreen
-            navigation.navigate('QrWithAmount', {
-              amount,
-              recipient: {
-                holder: recipientName,
-                AccountNumber: recipientAccount,
-              },
-            });
-          } else if (amount && !isNaN(amount) && tip && !isNaN(tip)) {
+          if (amount && !isNaN(amount) && tip && !isNaN(tip)) {
+            // ✅ Case 1: QR has amount + tip
             navigation.navigate('QRTipWithAmount', {
               amount,
               tip,
@@ -76,8 +69,17 @@ const QrScreen: React.FC = () => {
                 AccountNumber: recipientAccount,
               },
             });
+          } else if (amount && !isNaN(amount)) {
+            // ✅ Case 2: QR has only amount
+            navigation.navigate('QrWithAmount', {
+              amount,
+              recipient: {
+                holder: recipientName,
+                AccountNumber: recipientAccount,
+              },
+            });
           } else {
-            // ✅ Case 2: QR has no amount → go to MerchantPaymentScreen
+            // ✅ Case 3: QR has no amount → manual entry screen
             navigation.navigate('MerchantPaymentScreen', {
               recipient: {
                 holder: recipientName,
@@ -86,7 +88,7 @@ const QrScreen: React.FC = () => {
             });
           }
         } catch (e) {
-          alert('Invalid QR code');
+          Alert.alert('Error', 'Invalid QR code');
           setIsScanning(true);
         }
       }
@@ -145,7 +147,7 @@ const QrScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        <CustomButton title={'cancel'} onPress={() => navigation.goBack()} />
+        <CustomButton title={'Cancel'} onPress={() => navigation.goBack()} />
       </View>
     </SafeAreaView>
   );
@@ -189,6 +191,3 @@ const styles = StyleSheet.create({
 });
 
 export default QrScreen;
-function alert(arg0: string) {
-  throw new Error('Function not implemented.');
-}
