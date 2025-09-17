@@ -87,7 +87,7 @@ const SuccessfulTransaction = ({ route, navigation }) => {
         <View style={styles.rowButtons}>
           <TouchableOpacity style={styles.actionButton}>
             <Image
-              source={require('../assets/uit_print.png')}
+              source={require('../assets/share.png')}
               style={styles.actionIcon}
             />
             <Text style={styles.actionText}>Share</Text>

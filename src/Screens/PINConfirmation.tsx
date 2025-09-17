@@ -15,10 +15,11 @@ import Colors from '../Components/Colors';
 const PIN_LENGTH = 4;
 const emptyPin = () => Array(PIN_LENGTH).fill('');
 
-const PINConfirmation = ({ route }) => {
-  const { amount } = route.params || {};
-  const [pin, setpin] = useState(emptyPin());
-  const [showPin, setShowPin] = useState(false);
+const PINConfirmation = ({ navigation, route }) => {
+  const { amount, recipientAccount, recipientName, isBudgetEnabled } =
+    route.params || {};
+  const [reason, setReason] = useState('');
+  const [pin, setPin] = useState(emptyPin());
 
   const isPinComplete = pin.every(digit => digit !== '');
 
@@ -26,8 +27,29 @@ const PINConfirmation = ({ route }) => {
     ['1', '2', '3'],
     ['4', '5', '6'],
     ['7', '8', '9'],
-    
   ];
+
+  const handleKeyPress = key => {
+    if (key === '⌫') {
+      const lastIndex = pin
+        .slice()
+        .reverse()
+        .findIndex(d => d !== '');
+      if (lastIndex !== -1) {
+        const indexToClear = PIN_LENGTH - 1 - lastIndex;
+        const newPin = [...pin];
+        newPin[indexToClear] = '';
+        setPin(newPin);
+      }
+    } else if (key !== '.' && pin.includes('')) {
+      const firstEmpty = pin.findIndex(d => d === '');
+      if (firstEmpty !== -1) {
+        const newPin = [...pin];
+        newPin[firstEmpty] = key;
+        setPin(newPin);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,12 +72,11 @@ const PINConfirmation = ({ route }) => {
         </Text>
         <Text style={styles.amountText}>{amount} ETB</Text>
 
+        {/* PIN boxes */}
         <View style={styles.pinContainer}>
           {pin.map((digit, index) => (
             <View key={index} style={styles.pinBox}>
-              <Text style={styles.pinText}>
-                {showPin ? digit : digit ? '●' : ''}
-              </Text>
+              <Text style={styles.pinText}>{digit ? digit : ''}</Text>
             </View>
           ))}
         </View>
@@ -63,62 +84,70 @@ const PINConfirmation = ({ route }) => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{}}
       >
-        {/* Split layout: confirm on left, numbers on right */}
         <View style={styles.keyboardSplit}>
+          {/* Keypad */}
+          <View style={styles.keyboardContainer}>
+            <View style={styles.numberGrid}>
+              {numberKeys.map((row, rowIndex) => (
+                <View key={rowIndex} style={styles.row}>
+                  {row.map(key => (
+                    <TouchableOpacity
+                      key={key}
+                      style={styles.key}
+                      onPress={() => handleKeyPress(key)}
+                    >
+                      <Text style={styles.keyText}>{key}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              ))}
+
+              {/* last row: ., 0, ⌫ */}
+              <View style={styles.row}>
+                <TouchableOpacity
+                  style={styles.key}
+                  onPress={() => handleKeyPress('.')}
+                >
+                  <Text style={styles.keyText}>.</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.key}
+                  onPress={() => handleKeyPress('0')}
+                >
+                  <Text style={styles.keyText}>0</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.key}
+                  onPress={() => handleKeyPress('⌫')}
+                >
+                  <Text style={styles.keyText}>⌫</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
           {/* Confirm button */}
-
-          {/* Numeric keypad */}
-         <View style={styles.keyboardContainer}>
-                     <View style={styles.numberGrid}>
-                       {numberKeys.map((row, rowIndex) => (
-                         <View key={rowIndex} style={styles.row}>
-                           {row.map(key => (
-                             <TouchableOpacity
-                               key={key}
-                               style={styles.key}
-                            //    onPress={() => handleKeyPress(key)
-                                
-                            //    }
-                             >
-                               <Text style={styles.keyText}>{key}</Text>
-                             </TouchableOpacity>
-                           ))}
-                         </View>
-                       ))}
-                       <View style={styles.row}>
-                         <TouchableOpacity
-                           style={styles.key}
-                        //    onPress={() => handleKeyPress('.')}
-                         >
-                           <Text style={styles.keyText}>.</Text>
-                         </TouchableOpacity>
-                         <TouchableOpacity
-                           style={styles.key}
-                        //    onPress={() => handleKeyPress('0')}
-                         >
-                           <Text style={styles.keyText}>0</Text>
-                         </TouchableOpacity>
-                         <TouchableOpacity style={styles.key} 
-                        //  onPress={handleBackspace}
-                         >
-                           <Text style={styles.keyText}>⌫</Text>
-                         </TouchableOpacity>
-                       </View>
-                     </View>
-                   </View>
-
           <TouchableOpacity
             style={[
               styles.confirmButton,
-              isPinComplete
-                ? { backgroundColor: Colors.primary }
-                : { backgroundColor: Colors.primary },
+              { backgroundColor: isPinComplete ? Colors.primary : '#ccc' },
             ]}
             disabled={!isPinComplete}
-            // onPress={handleVerify}
-          ></TouchableOpacity>
+            onPress={() => {
+              navigation.navigate('SuccessfulTransaction', {
+                amount,
+                recipientAccount,
+                recipientName,
+                isBudgetEnabled,
+                reason,
+              });
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
+              Confirm
+            </Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </View>
@@ -159,7 +188,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
   },
-  numberGrid: { flex: 1 },
   pinBox: {
     width: 60,
     height: 60,
@@ -171,24 +199,20 @@ const styles = StyleSheet.create({
   },
   pinText: { fontSize: 22, fontWeight: 'bold' },
 
-  /* Keyboard split layout */
   keyboardSplit: {
     flexDirection: 'row',
     width: '100%',
     height: 300,
     backgroundColor: '#f0f0f0',
- 
-
   },
   confirmButton: {
     width: 100,
     height: '90%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight:10,
-    marginTop:20,
-    borderRadius:20,
-    
+    marginRight: 10,
+    marginTop: 20,
+    borderRadius: 20,
   },
   keyboardContainer: {
     flex: 1,

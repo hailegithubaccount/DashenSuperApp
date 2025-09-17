@@ -262,8 +262,8 @@ const TypeMoney = ({ route, navigation }) => {
                   </View>
 
                   <NextButtonWithModal
-                    typedAmount={null}
-                    scannedAmount={scannedAmount}
+                    typedAmount={amount}
+                    scannedAmount={null}
                     selectedAccount={account}
                     recipient={recipient}
                     navigation={navigation}
