@@ -121,7 +121,14 @@ const QrScreen: React.FC = () => {
         <View style={styles.overlayTop} />
         <View style={styles.row}>
           <View style={styles.overlaySide} />
-          <View style={styles.scanFrame} />
+          <View style={[styles.scanFrame,
+            {
+             
+              borderWidth:1,
+              borderRadius:2,
+              
+            }
+          ]} />
           <View style={styles.overlaySide} />
         </View>
         <View style={styles.overlayBottom} />
@@ -129,7 +136,7 @@ const QrScreen: React.FC = () => {
         {/* Buttons below scan box */}
         <View
           style={{
-            backgroundColor: 'rgba(0,0,0,0.)',
+            backgroundColor: 'rgba(0,0,0,0)',
             padding: 100,
             position: 'absolute',
             marginTop: 400,
@@ -190,6 +197,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth:1,
+
+    
+    
   },
   row: { flexDirection: 'row', alignItems: 'center' },
 
@@ -198,7 +209,6 @@ const styles = StyleSheet.create({
     height: BOX_SIZE,
     borderColor: 'black',
     backgroundColor: 'transparent',
-  
     borderRadius: 10,
     
   },

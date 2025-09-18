@@ -75,6 +75,8 @@ const NextButtonWithModal = ({
     : scannedAmount
     ? scannedAmount
     : 0;
+    const isDisabled = !amountToSend || amountToSend <= 0;
+
 
   const handleBudgetPress = item => {
     setBudgets(prev =>
@@ -86,6 +88,7 @@ const NextButtonWithModal = ({
     );
 
     setNextModalVisible(false);
+    const isDisabled = !amountToSend || amountToSend <= 0;
 
     navigation.navigate(tragetScreen, {
       amount: amountToSend,
@@ -134,10 +137,14 @@ const NextButtonWithModal = ({
         <CustomButton
           title="Next"
           onPress={() => {
-            Keyboard.dismiss();
-            setNextModalVisible(true);
+            if (!isDisabled) {
+              Keyboard.dismiss();
+              setNextModalVisible(true);
+            }
           }}
           width="95%"
+          disabled={isDisabled}
+          style={isDisabled ? { backgroundColor: 'gray' } : {}}
         />
       </View>
 

@@ -1,12 +1,21 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+// Screens/QrPaymentScreen.js
+import React from 'react';
+import ReusablePaymentScreen from '../Components/ReusableQRpayemtpage';
 
-const QRTipWithAmount = () => {
+const QRTipWithAmount = (props) => {
   return (
-    <View>
-      <Text>QRTipWithAmount</Text>
-    </View>
-  )
-}
+    <ReusablePaymentScreen
+      {...props}
+      title="QR Payment"
+      targetScreen="ConfrimScreenForQr"
+      showButton={false}
+      showModal={false}
+      showNextButtonWithModal={true}
+      ShowTipBox={true}
+     
+      
+    />
+  );
+};
 
-export default QRTipWithAmount
+export default QRTipWithAmount;

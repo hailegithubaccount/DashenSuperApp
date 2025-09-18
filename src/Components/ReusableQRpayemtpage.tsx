@@ -31,7 +31,7 @@ const ReusablePaymentScreen = ({
   title = 'QR Payment', // ✅ dynamic title
   targetScreen = 'ConfirmTransfer', // ✅ dynamic target
 }) => {
-  const { amount: scannedAmount = '0.00', recipient = {} } = route.params || {};
+  const { amount: scannedAmount = '0.00',tip, recipient = {} } = route.params || {};
 
   const [account, setAccount] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,6 +42,7 @@ const ReusablePaymentScreen = ({
 
   const toggleSwitch = () => setIsEnabled(prev => !prev);
   const openPinModal = () => setModalVisible(true);
+ const isDisabled = !scannedAmount || scannedAmount <= 0;
 
   useFocusEffect(
     useCallback(() => {
@@ -100,7 +101,7 @@ const ReusablePaymentScreen = ({
                   }}
                 >
                   <Text style={{}}>Tip Amount</Text>
-                  <Text>+ 100</Text>
+                  <Text>+ {tip}</Text>
                 </View>
               )}
 
@@ -119,7 +120,20 @@ const ReusablePaymentScreen = ({
           {/* Bottom Next Button */}
           {showButton && (
             <View style={styles.bottomButton}>
-              <CustomButton title="Next" onPress={openPinModal} width="95%" />
+              <CustomButton title="Next" onPress={openPinModal} disabled={isDisabled} width="95%" />
+
+              {/* <CustomButton
+          title="Next"
+          onPress={() => {
+            if (!isDisabled) {
+              Keyboard.dismiss();
+              setNextModalVisible(true);
+            }
+          }}
+          width="95%"
+          disabled={isDisabled}
+          style={isDisabled ? { backgroundColor: 'gray' } : {}}
+        /> */}
             </View>
           )}
 
