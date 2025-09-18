@@ -44,7 +44,7 @@ const HomeScreens = ({ navigation }) => {
       title: 'Send To Dashen',
       image: require('../assets/sendtodashen.png'),
       onpress: () => {
-        navigation.navigate('');
+        navigation.navigate('NumberPad');
       },
     },
     {
