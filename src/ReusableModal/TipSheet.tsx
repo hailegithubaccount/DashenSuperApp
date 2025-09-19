@@ -19,12 +19,6 @@ import CustomButton from '../Components/CustomButton';
 const TipSheet = ({
   visible,
   onClose,
-  title,
-  options = [],
-  enableSwitch = false,
-
-  inputPlaceholder = '0.00',
-
   onOpenBudget,
   navigation,
 }) => {
@@ -34,13 +28,7 @@ const TipSheet = ({
   const toggleSwitch = () => setIsEnabled(prev => !prev);
   const presetPrices = ['10.00', '25.00', '50.00', '100.00'];
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     navigation.navigate('MiniApp', { Tip: inputValue });
-  //   }, );
-
-    
-  // }, [inputValue, navigation]);
+ 
 
   return (
     <Modal
@@ -64,27 +52,36 @@ const TipSheet = ({
             <View style={styles.modalContent}>
               <View style={styles.buttonwithtext}>
                 <Text style={styles.title}>Give A tip</Text>
-                <TouchableOpacity onPress={onClose}>
+                <TouchableOpacity
+                  onPress={() => {
+                    const parsedTip = inputValue
+                      ? parseFloat(inputValue)
+                      : null;
+                    onOpenBudget(parsedTip);
+                  }}
+                >
                   <Text style={styles.skipBtn}>Skip</Text>
                 </TouchableOpacity>
               </View>
 
-              {enableSwitch && (
+              
                 <View style={styles.switchRow}>
-                  <Text style={{ fontSize: 16 }}>{title} on Transfers</Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Tip selection on Transfers
+                  </Text>
                   <Switch
-                    trackColor={{ false: Colors.primary, true: Colors.primary }}
+                    trackColor={{ false: '#767577', true: Colors.primary }}
                     thumbColor={'#f4f3f4'}
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                   />
                 </View>
-              )}
+              
 
               <View style={styles.tipBox}>
                 <Text style={{ marginHorizontal: 10 }}>Custom</Text>
                 <CustomTextInput
-                  placeholder={inputPlaceholder}
+                  placeholder={'0.00'}
                   keyboardType="numeric"
                   value={String(inputValue)}
                   onChangeText={setInputValue}
@@ -98,7 +95,7 @@ const TipSheet = ({
                       key={price}
                       style={[
                         styles.priceBox,
-                        inputValue === price && styles.selectedBox,
+                       
                       ]}
                       onPress={() => {
                         setInputValue(price);
@@ -107,7 +104,7 @@ const TipSheet = ({
                       <Text
                         style={[
                           styles.priceText,
-                          inputValue === price && styles.selectedText,
+                         
                         ]}
                       >
                         {price} Birr
@@ -118,11 +115,13 @@ const TipSheet = ({
                   {/* Budget Button */}
                 </View>
               </View>
-              <CustomButton title={'Next'}  onPress={() => {
-    const numericValue = inputValue ? parseFloat(inputValue) : null;
-    onOpenBudget(numericValue);   // ✅ send value back to NumberPad
-  }} />
-
+              <CustomButton
+                title={'Next'}
+                onPress={() => {
+                  const parsedTip = inputValue ? parseFloat(inputValue) : null;
+                  onOpenBudget(parsedTip);
+                }}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>

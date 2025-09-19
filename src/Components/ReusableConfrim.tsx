@@ -24,21 +24,20 @@ const ConfirmBaseScreen = ({
   imageSource,
   showTip = false,
   showreason = false,
-  // confirmAction: 'modal' | 'navigate'
+  showInputReason = false,
+  showLabelReason = false,
+
   confirmAction = 'modal',
 
-  // used when confirmAction === 'navigate'
   navigateTo,
 
-  // used when confirmAction === 'modal' (called after successful PIN)
-  onConfirmed, // function({ amount, recipientAccount, recipientName, isBudgetEnabled, reason, tip })
+  onConfirmed,
 }) => {
   const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip } =
     route.params || {};
   const [reason, setReason] = useState('');
   const [isPinModalVisible, setPinModalVisible] = useState(false);
 
-  // PIN state & keyboard logic (simple numeric PIN)
   const emptyPin = () => Array(PIN_LENGTH).fill('');
   const [pin, setPin] = useState(emptyPin());
   const [showPin, setShowPin] = useState(false);
@@ -149,7 +148,6 @@ const ConfirmBaseScreen = ({
     }
   };
 
-
   const RowItem = ({ label, value, bold = false }) => (
     <View style={styles.rowItem}>
       <Text style={[styles.firstText, bold && { fontWeight: '600' }]}>
@@ -192,21 +190,17 @@ const ConfirmBaseScreen = ({
           <RowItem label="Total:" value={`${amount} ETB`} bold={false} />
         </View>
 
+        {showLabelReason && <Text style={styles.label}>Reason</Text>}
 
-
-
-
-
-
-
-        <Text style={styles.label}>Reason</Text>
-        <TextInput
-          style={styles.reasonBox}
-          placeholder="Enter your reason"
-          placeholderTextColor="#888"
-          value={reason}
-          onChangeText={setReason}
-        />
+        {showInputReason && (
+          <TextInput
+            style={styles.reasonBox}
+            placeholder="Enter your reason"
+            placeholderTextColor="#888"
+            value={reason}
+            onChangeText={setReason}
+          />
+        )}
 
         <TouchableOpacity
           style={styles.confirmButton}
@@ -222,23 +216,6 @@ const ConfirmBaseScreen = ({
           <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
       </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* PIN Modal */}
       <Modal
@@ -407,11 +384,10 @@ const styles = StyleSheet.create({
   confirmText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
   cancelText: { color: Colors.primary, fontSize: 18, fontWeight: 'bold' },
   rowItem: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  paddingVertical: 6,
-},
-
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
 
   /* modal/pin styles */
   modal: { justifyContent: 'flex-end', margin: 0 },

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Image,
   Keyboard,
@@ -46,7 +47,7 @@ const NumberPad = ({ navigation, route }) => {
             contentContainerStyle={{
               paddingBottom: 120,
               flexDirection: 'column',
-              gap:300,
+              gap: 300,
             }}
           >
             <View>
@@ -81,7 +82,20 @@ const NumberPad = ({ navigation, route }) => {
             </View>
 
             <View>
-              <CustomButton title="Next" onPress={() => setTipVisible(true)} />
+              <CustomButton
+                title="Next"
+                onPress={() => {
+                  if (!selectedAccount || selectedAccount === '00000000') {
+                    Alert.alert(
+                      'Invalid Account',
+                      'Please select a valid account before proceeding.',
+                    );
+                    return;
+                  }
+
+                  setTipVisible(true);
+                }}
+              />
 
               <TipSheet
                 visible={TipVisible}

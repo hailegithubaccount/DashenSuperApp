@@ -10,15 +10,15 @@ const CustomButton = ({
   onPress,
   backgroundColor = Colors.primary,
   textColor = "#fff",
-  titleSize = 16,      // 👈 new: font size for title
+  titleSize = 16,      
   subtitleColor = "#eee",
-  subtitleSize = 13,   // 👈 new: font size for subtitle
+  subtitleSize = 13,   
   borderColor = null,
-  width = "90%",
-  height = 70,
+  width = "95%",
+  height = 60,
   borderRadius = 50,
   disabled = false,
-  layout = "row", // "row" (text beside image) | "column" (text below image)
+  layout = "row", 
 }) => {
   return (
     <TouchableOpacity
