@@ -15,12 +15,12 @@ import { useNavigation } from '@react-navigation/native';
 const BudgetSheet = ({
   visible,
   onClose,
-  route,
   navigation,
   typedAmount,
-  scannedAmount,
+  recipient,
+  
 }) => {
-  const [budgets] = useState([
+  const [budgets,setBudgets] = useState([
     {
       id: '1',
       title: 'House Rental',
@@ -59,16 +59,18 @@ const BudgetSheet = ({
     },
   ]);
 
+
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(prev => !prev);
   const nav = useNavigation();
 
-  const { amount, tip, recipient = {} } = route.params || {};
+  
 
   const recipientName = recipient?.holder || recipient?.recipientName || '';
   const recipientAccount =
     recipient?.AccountNumber || recipient?.recipientAccount || '';
-  const [Budgets, setBudgets] = useState();
+  
 
   const amountToSend = typedAmount
     ? typedAmount
@@ -80,28 +82,26 @@ const BudgetSheet = ({
 
   //   nav.navigate('MiniApp'); //
   // };
-  const handleBudgetPress = (item: { id: any; amount: number; }) => {
-    setBudgets(prev =>
-      prev.map(b =>
-        b.id === item.id
-          ? { ...b, amount: Math.max(b.amount - amountToSend, 0) }
-          : b,
-      ),
-    );
+  const handleBudgetPress = (item) => {
+  setBudgets(prev =>
+    prev.map(b =>
+      b.id === item.id
+        ? { ...b, amount: Math.max(b.amount - amountToSend, 0) }
+        : b
+    )
+  );
 
-    const isDisabled = !amountToSend || amountToSend <= 0;
-    onClose();
+  onClose();
 
-    navigation.navigate('MiniApp', {
-      amount: amountToSend,
+  navigation.navigate('MiniApp', {
+    amount: amountToSend,
+    recipientName: recipient.holder,
+    recipientAccount: recipient.AccountNumber,
+    isBudgetEnabled: isEnabled,
+    remainingBudget: Math.max(item.amount - amountToSend, 0),
+  });
+};
 
-      recipientName,
-      recipientAccount,
-      isBudgetEnabled: isEnabled,
-
-      remainingBudget: Math.max(item.amount - amountToSend, 0),
-    });
-  };
 
   const movetoconfrimwithoutbudget = () => {
     if (!amountToSend || amountToSend === 0) return;

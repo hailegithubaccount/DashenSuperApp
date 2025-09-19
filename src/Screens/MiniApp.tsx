@@ -3,11 +3,16 @@ import React from 'react';
 
 const MiniApp = ({ route }) => {
  
-  const { Tip } = route.params || {};
+   const { amount, recipientAccount, recipientName, isBudgetEnabled, tip } =
+    route.params || {};
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{Tip|| "No title selected"}</Text>
+      <Text style={styles.title}>{amount|| "No title selected"}</Text>
+       <Text style={styles.title}>{recipientAccount|| "No title selected"}</Text>
+        <Text style={styles.title}>{recipientName|| "No title selected"}</Text>
+         <Text style={styles.title}>{isBudgetEnabled|| "No title selected"}</Text>
+         
      
     </View>
   );

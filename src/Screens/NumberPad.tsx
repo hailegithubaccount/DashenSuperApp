@@ -40,7 +40,7 @@ const NumberPad = ({ navigation, route }) => {
 
   // const [visible, setVisible] = useState(false);
 
-  const { amount: scannedAmount = '0.00' } = route.params || {};
+    const { amount: scannedAmount = '0.00',tip, recipient = {} } = route.params || {};
 
   return (
     <KeyboardAvoidingView
@@ -111,9 +111,10 @@ const NumberPad = ({ navigation, route }) => {
                 visible={budgetVisible}
                 onClose={closeBudgetVisible}
                 navigation={navigation}
-                route={route}
-                scannedAmount={scannedAmount}
+               
+                
                 typedAmount={null}
+                recipient={recipient}
               />
             </View>
           </ScrollView>
