@@ -66,7 +66,7 @@ const QrScreen: React.FC = () => {
               },
             });
           } else if (amount && !isNaN(amount)) {
-            navigation.navigate('QrWithAmount', {
+            navigation.navigate('NumberPad', {
               amount,
               recipient: {
                 holder: recipientName,
@@ -121,14 +121,15 @@ const QrScreen: React.FC = () => {
         <View style={styles.overlayTop} />
         <View style={styles.row}>
           <View style={styles.overlaySide} />
-          <View style={[styles.scanFrame,
-            {
-             
-              borderWidth:1,
-              borderRadius:2,
-              
-            }
-          ]} />
+          <View
+            style={[
+              styles.scanFrame,
+              {
+                borderWidth: 1,
+                borderRadius: 2,
+              },
+            ]}
+          />
           <View style={styles.overlaySide} />
         </View>
         <View style={styles.overlayBottom} />
@@ -197,10 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth:1,
-
-    
-    
+    borderWidth: 1,
   },
   row: { flexDirection: 'row', alignItems: 'center' },
 
@@ -210,7 +208,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     backgroundColor: 'transparent',
     borderRadius: 10,
-    
   },
 
   overlayTop: { flex: 1, width: '100%', backgroundColor: 'rgba(0,0,0,0.6)' },

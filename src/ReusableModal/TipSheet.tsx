@@ -1,5 +1,5 @@
 // ReusableModal/OptionSheet.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -16,7 +16,7 @@ import Colors from '../Components/Colors';
 import CustomTextInput from '../Components/TextInput';
 import CustomButton from '../Components/CustomButton';
 
-const OptionSheet = ({
+const TipSheet = ({
   visible,
   onClose,
   title,
@@ -25,14 +25,22 @@ const OptionSheet = ({
 
   inputPlaceholder = '0.00',
 
-  onSelect,
-  onOpenBudget, 
+  onOpenBudget,
+  navigation,
 }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
   const toggleSwitch = () => setIsEnabled(prev => !prev);
   const presetPrices = ['10.00', '25.00', '50.00', '100.00'];
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     navigation.navigate('MiniApp', { Tip: inputValue });
+  //   }, );
+
+    
+  // }, [inputValue, navigation]);
 
   return (
     <Modal
@@ -54,7 +62,6 @@ const OptionSheet = ({
             }}
           >
             <View style={styles.modalContent}>
-           
               <View style={styles.buttonwithtext}>
                 <Text style={styles.title}>Give A tip</Text>
                 <TouchableOpacity onPress={onClose}>
@@ -62,7 +69,6 @@ const OptionSheet = ({
                 </TouchableOpacity>
               </View>
 
-            
               {enableSwitch && (
                 <View style={styles.switchRow}>
                   <Text style={{ fontSize: 16 }}>{title} on Transfers</Text>
@@ -75,7 +81,6 @@ const OptionSheet = ({
                 </View>
               )}
 
-            
               <View style={styles.tipBox}>
                 <Text style={{ marginHorizontal: 10 }}>Custom</Text>
                 <CustomTextInput
@@ -87,7 +92,6 @@ const OptionSheet = ({
                   marginTop={5}
                 />
 
-              
                 <View style={styles.boxesContainer}>
                   {presetPrices.map(price => (
                     <TouchableOpacity
@@ -114,7 +118,7 @@ const OptionSheet = ({
                   {/* Budget Button */}
                 </View>
               </View>
-              <CustomButton title={'Budget'} onPress={onOpenBudget} />
+              <CustomButton title={'Next'} onPress={onOpenBudget} />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -123,7 +127,7 @@ const OptionSheet = ({
   );
 };
 
-export default OptionSheet;
+export default TipSheet;
 
 const styles = StyleSheet.create({
   modalContent: {

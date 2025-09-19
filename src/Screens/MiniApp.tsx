@@ -3,11 +3,11 @@ import React from 'react';
 
 const MiniApp = ({ route }) => {
  
-  const { tip } = route.params || {};
+  const { Tip } = route.params || {};
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{tip|| "No title selected"}</Text>
+      <Text style={styles.title}>{Tip|| "No title selected"}</Text>
      
     </View>
   );

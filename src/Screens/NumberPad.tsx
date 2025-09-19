@@ -18,14 +18,8 @@ import AccountSheet from '../ReusableModal/AccounSheet';
 import Colors from '../Components/Colors';
 import TipSheet from '../ReusableModal/TipSheet';
 import OtherBanktopbar from '../Components/otherBanktopbar';
-import CustomTextInput from '../Components/TextInput';
 
-const NumberPad = ({
-  placeholder = '000000000000',
-  width = 160,
-  height = 30,
-  navigation,
-}) => {
+const NumberPad = ({ navigation, route }) => {
   // for budgetsheet========================================================
 
   // const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +36,11 @@ const NumberPad = ({
   const [optionVisible, setOptionVisible] = useState(false);
   const [budgetVisible, setBudgetVisible] = useState(false);
 
-  const [visible, setVisible] = useState(false);
+  const closeBudgetVisible = () => setBudgetVisible(false);
+
+  // const [visible, setVisible] = useState(false);
+
+  const { amount: scannedAmount = '0.00' } = route.params || {};
 
   return (
     <KeyboardAvoidingView
@@ -55,43 +53,69 @@ const NumberPad = ({
 
           <ScrollView
             style={{ marginHorizontal: 16 }}
-            contentContainerStyle={{ paddingBottom: 120 }}
+            contentContainerStyle={{
+              paddingBottom: 120,
+              flexDirection: 'column',
+              gap: 300,
+            }}
           >
-            <View style={styles.bothtext}>
-              <Text style={styles.firsttext}>Select Account</Text>
-              <Text style={styles.SecondText}>
-                Select your account and confirm payment
-              </Text>
+            <View>
+              <View style={styles.bothtext}>
+                <Text style={styles.firsttext}>Select Account</Text>
+                <Text style={styles.SecondText}>
+                  Select your account and confirm payment
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(true)}
+                style={styles.borderSelectAccount}
+              >
+                <Text style={styles.SelectAccount}>
+                  {selectedAccount ? selectedAccount : '-Select'}
+                </Text>
+                <Image
+                  source={require('../assets/Downicon.png')}
+                  style={styles.downicon}
+                />
+
+                <AccountSheet
+                  visible={isModalVisible}
+                  onClose={() => setIsModalVisible(false)}
+                  onConfirm={(account: React.SetStateAction<string>) =>
+                    setSelectedAccount(account)
+                  }
+                />
+              </TouchableOpacity>
+              <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
             </View>
 
-            {/* <TouchableOpacity
-              onPress={() => setIsModalVisible(true)}
-              style={styles.borderSelectAccount}
-            >
-              <Text style={styles.SelectAccount}>
-                {selectedAccount ? selectedAccount : placeholder}
-              </Text>
-              <Image
-                source={require('../assets/Downicon.png')}
-                style={styles.downicon}
-              /> */}
-            <CustomTextInput
-              label="Account Number"
-              placeholder="-Select"
-              showImage
-              imageSource={require('../assets/Downicon.png')}
-              value={selectedAccount}
-              onChangeText={setSelectedAccount}
-              borderRadius={10}
-            />
+            <View>
+              <CustomButton
+                title="Next"
+                onPress={() => setOptionVisible(true)}
+              />
 
-            <AccountSheet
-              visible={isModalVisible}
-              onClose={() => setIsModalVisible(false)}
-              onConfirm={(account: React.SetStateAction<string>) =>
-                setSelectedAccount(account)
-              }
-            />
+              <TipSheet
+                visible={optionVisible}
+                onClose={() => setOptionVisible(false)}
+                title="Choose Amount"
+                enableSwitch
+                onOpenBudget={() => {
+                  setOptionVisible(false);
+                  setBudgetVisible(true);
+                }}
+                navigation={navigation}
+              />
+              <BudgetSheet
+                visible={budgetVisible}
+                onClose={closeBudgetVisible}
+                navigation={navigation}
+                route={route}
+                scannedAmount={scannedAmount}
+                typedAmount={null}
+              />
+            </View>
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
@@ -104,6 +128,7 @@ export default NumberPad;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   borderSelectAccount: {
     flexDirection: 'row',
@@ -115,6 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     width: '90%',
+    height: 50,
   },
   SelectAccount: {
     fontSize: 16,
@@ -127,4 +153,11 @@ const styles = StyleSheet.create({
   bothtext: { marginHorizontal: 16, marginVertical: 16 },
   firsttext: { marginTop: 24, fontSize: 28, fontWeight: 'bold' },
   SecondText: { fontSize: 16, color: '#757575' },
+  amounttext: {
+    alignSelf: 'center',
+    marginTop: 24,
+    fontSize: 36,
+    color: '#989898',
+    fontWeight: 'bold',
+  },
 });
