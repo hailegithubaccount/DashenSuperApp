@@ -118,7 +118,11 @@ const TipSheet = ({
                   {/* Budget Button */}
                 </View>
               </View>
-              <CustomButton title={'Next'} onPress={onOpenBudget} />
+              <CustomButton title={'Next'}  onPress={() => {
+    const numericValue = inputValue ? parseFloat(inputValue) : null;
+    onOpenBudget(numericValue);   // ✅ send value back to NumberPad
+  }} />
+
             </View>
           </View>
         </TouchableWithoutFeedback>

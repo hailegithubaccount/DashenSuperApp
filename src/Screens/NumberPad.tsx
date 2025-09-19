@@ -20,27 +20,17 @@ import TipSheet from '../ReusableModal/TipSheet';
 import OtherBanktopbar from '../Components/otherBanktopbar';
 
 const NumberPad = ({ navigation, route }) => {
-  // for budgetsheet========================================================
-
-  // const [modalVisible, setModalVisible] = useState(false);
-  // const openModal = () => setModalVisible(true);
-  // const closeModal = () => setModalVisible(false);
-  // ========================================================================
-
-  //for accounsheet ==============================================
-
   const [selectedAccount, setSelectedAccount] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  //=========================================================
 
-  const [optionVisible, setOptionVisible] = useState(false);
+  const [TipVisible, setTipVisible] = useState(false);
   const [budgetVisible, setBudgetVisible] = useState(false);
 
   const closeBudgetVisible = () => setBudgetVisible(false);
 
-  // const [visible, setVisible] = useState(false);
+  const { amount: scannedAmount = '0.00', recipient = {} } = route.params || {};
 
-    const { amount: scannedAmount = '0.00',tip, recipient = {} } = route.params || {};
+  const [typedTip, setTypedTip] = useState(null);
 
   return (
     <KeyboardAvoidingView
@@ -56,7 +46,7 @@ const NumberPad = ({ navigation, route }) => {
             contentContainerStyle={{
               paddingBottom: 120,
               flexDirection: 'column',
-              gap: 300,
+              gap:300,
             }}
           >
             <View>
@@ -91,30 +81,28 @@ const NumberPad = ({ navigation, route }) => {
             </View>
 
             <View>
-              <CustomButton
-                title="Next"
-                onPress={() => setOptionVisible(true)}
-              />
+              <CustomButton title="Next" onPress={() => setTipVisible(true)} />
 
               <TipSheet
-                visible={optionVisible}
-                onClose={() => setOptionVisible(false)}
-                title="Choose Amount"
+                visible={TipVisible}
+                onClose={() => setTipVisible(false)}
                 enableSwitch
-                onOpenBudget={() => {
-                  setOptionVisible(false);
+                onOpenBudget={value => {
+                  setTipVisible(false);
+                  setTypedTip(value);
                   setBudgetVisible(true);
                 }}
                 navigation={navigation}
               />
+
               <BudgetSheet
                 visible={budgetVisible}
                 onClose={closeBudgetVisible}
                 navigation={navigation}
-               
-                
+                scannedAmount={scannedAmount}
                 typedAmount={null}
                 recipient={recipient}
+                typedTip={typedTip}
               />
             </View>
           </ScrollView>

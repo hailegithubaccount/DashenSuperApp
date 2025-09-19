@@ -33,7 +33,7 @@ const ConfirmBaseScreen = ({
   // used when confirmAction === 'modal' (called after successful PIN)
   onConfirmed, // function({ amount, recipientAccount, recipientName, isBudgetEnabled, reason, tip })
 }) => {
-  const { amount, recipientAccount, recipientName, isBudgetEnabled, tip } =
+  const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip } =
     route.params || {};
   const [reason, setReason] = useState('');
   const [isPinModalVisible, setPinModalVisible] = useState(false);
@@ -112,7 +112,7 @@ const ConfirmBaseScreen = ({
         recipientName,
         isBudgetEnabled,
         reason,
-        tip,
+        typedTip,
       };
 
       if (typeof onConfirmed === 'function') {
@@ -137,7 +137,7 @@ const ConfirmBaseScreen = ({
         recipientName,
         isBudgetEnabled,
         reason,
-        tip,
+        typedTip,
       };
 
       if (navigateTo) {
@@ -148,6 +148,18 @@ const ConfirmBaseScreen = ({
       }
     }
   };
+
+
+  const RowItem = ({ label, value, bold = false }) => (
+    <View style={styles.rowItem}>
+      <Text style={[styles.firstText, bold && { fontWeight: '600' }]}>
+        {label}
+      </Text>
+      <Text style={[styles.secondText, bold && { fontWeight: '600' }]}>
+        {value}
+      </Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -163,52 +175,29 @@ const ConfirmBaseScreen = ({
 
         <Text style={styles.sectionTitle}>Transaction Details</Text>
         <View style={styles.transactionBox}>
-          <View style={styles.content}>
-            <Text style={styles.firstText}>Sender Account:</Text>
-            <Text style={styles.secondText}>Abebe Ayele Girma</Text>
-          </View>
+          <RowItem label="Sender Account:" value="Abebe Ayele Girma" />
+          <RowItem label="Recipient Account:" value={recipientAccount} />
+          <RowItem label="Recipient Name:" value={recipientName} />
 
-          <View style={styles.content}>
-            <Text style={styles.firstText}>Recipient Account:</Text>
-            <Text style={styles.secondText}>{recipientAccount}</Text>
-          </View>
+          {showreason && <RowItem label="Reason:" value={reason || '-'} />}
 
-          <View style={styles.content}>
-            <Text style={styles.firstText}>Recipient Name:</Text>
-            <Text style={styles.secondText}>{recipientName}</Text>
-          </View>
+          <RowItem
+            label="Budget Type:"
+            value={isBudgetEnabled ? 'ON Budget' : 'OFF Budget'}
+          />
 
-          {showreason && (
-            <View style={styles.content}>
-              <Text style={styles.firstText}>Reason:</Text>
-              <Text style={styles.secondText}>{reason || '-'}</Text>
-            </View>
-          )}
+          {showTip && <RowItem label="Tip:" value={typedTip ?? 'No tip'} />}
 
-          <View style={styles.content}>
-            <Text style={styles.firstText}>Budget Type:</Text>
-            <Text style={styles.secondText}>
-              {isBudgetEnabled ? 'ON Budget' : 'OFF Budget'}
-            </Text>
-          </View>
-
-          {showTip && (
-            <View style={styles.content}>
-              <Text style={styles.firstText}>Tip:</Text>
-              <Text style={styles.secondText}>{tip ?? 'No tip'}</Text>
-            </View>
-          )}
-
-          <View style={styles.content}>
-            <Text style={styles.firstText}>Fee:</Text>
-            <Text style={styles.secondText}>0.00 ETB</Text>
-          </View>
-
-          <View style={styles.content}>
-            <Text style={styles.totalText}>Total:</Text>
-            <Text style={styles.secondText}>{amount} ETB</Text>
-          </View>
+          <RowItem label="Fee:" value="0.00 ETB" />
+          <RowItem label="Total:" value={`${amount} ETB`} bold={false} />
         </View>
+
+
+
+
+
+
+
 
         <Text style={styles.label}>Reason</Text>
         <TextInput
@@ -233,6 +222,23 @@ const ConfirmBaseScreen = ({
           <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
       </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* PIN Modal */}
       <Modal
@@ -400,6 +406,12 @@ const styles = StyleSheet.create({
   cancelButton: { padding: 15, borderRadius: 30, alignItems: 'center' },
   confirmText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
   cancelText: { color: Colors.primary, fontSize: 18, fontWeight: 'bold' },
+  rowItem: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  paddingVertical: 6,
+},
+
 
   /* modal/pin styles */
   modal: { justifyContent: 'flex-end', margin: 0 },
