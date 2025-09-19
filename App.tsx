@@ -21,7 +21,7 @@ import MerchantPaymentScreen from './src/Screens/MerchantPaymentScreen';
 import ConfrimScreenForQr from './src/Screens/ConfrimScreenForQr';
 import PINConfirmation from './src/Screens/PINConfirmation';
 import QRTipWithAmount from './src/Screens/QRTipWithAmount';
-import NumberPad from './src/Screens/NumberPad';
+import AmountScreen from './src/Screens/AmountScreen';
 import MiniApp from './src/Screens/MiniApp';
 
 const Stack = createNativeStackNavigator();
@@ -66,7 +66,7 @@ function App() {
           <Stack.Screen name="ConfrimScreenForQr" component={ConfrimScreenForQr} />
           <Stack.Screen name="PINConfirmation" component={PINConfirmation} />
           <Stack.Screen name="QRTipWithAmount" component={QRTipWithAmount } />
-          <Stack.Screen name="NumberPad" component={NumberPad} />
+          <Stack.Screen name="AmountScreen" component={AmountScreen} />
           <Stack.Screen name="MiniApp" component={MiniApp} />
           
         </Stack.Navigator>

@@ -1,38 +1,24 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import NumberPad from '../Components/NumberPad';
+import ReusedAmountScreen from '../Components/ReusedAmountScreen';
 
-const MiniApp = ({ route }) => {
-  const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip } =
-    route.params || {};
+const ExampleScreen = ({ navigation, route }) => {
+  const [amount, setAmount] = useState('');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{amount || 'No title selected'}</Text>
-      <Text style={styles.title}>
-        {recipientAccount || 'No title selected'}
-      </Text>
-      <Text style={styles.title}>{recipientName || 'No title selected'}</Text>
-      <Text style={styles.title}>{typedTip || 'No title selected'}</Text>
+    <View style={{ flex: 1 }}>
+      <ReusedAmountScreen
+        navigation={navigation}   
+        route={route}             
+        nexttext="sdf"
+        showSelectAccounbig={true}
+        showkeypad={true}
+        amount={amount}          
+        setAmount={setAmount}    
+      />
     </View>
   );
 };
 
-export default MiniApp;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  amount: {
-    fontSize: 18,
-    color: 'gray',
-  },
-});
+export default ExampleScreen;

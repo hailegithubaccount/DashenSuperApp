@@ -66,7 +66,7 @@ const QrScreen: React.FC = () => {
               },
             });
           } else if (amount && !isNaN(amount)) {
-            navigation.navigate('NumberPad', {
+            navigation.navigate('AmountScreen', {
               amount,
               recipient: {
                 holder: recipientName,

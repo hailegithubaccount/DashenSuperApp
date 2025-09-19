@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -19,8 +18,16 @@ import AccountSheet from '../ReusableModal/AccounSheet';
 import Colors from '../Components/Colors';
 import TipSheet from '../ReusableModal/TipSheet';
 import OtherBanktopbar from '../Components/otherBanktopbar';
+import NumberPad from './NumberPad';
 
-const NumberPad = ({ navigation, route }) => {
+const AmountScreen = ({
+  navigation,
+  route,
+  nexttext = 'Add Amount',
+  SelectAccount = 'Select Account',
+  showSelectAccounbig = false,
+  showkeypad = false,
+}) => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -31,77 +38,75 @@ const NumberPad = ({ navigation, route }) => {
 
   const { amount: scannedAmount = '0.00', recipient = {} } = route.params || {};
 
-  const [typedTip, setTypedTip] = useState(null);
+  const [typedTip, setTypedTip] = useState<number | null>(null);
+  const [amount, setAmount] = useState('');
+
+  
+  const finalAmount = amount && parseFloat(amount) > 0 ? amount : scannedAmount;
+
+  const handleNext = () => {
+    if (showSelectAccounbig && (!selectedAccount || selectedAccount === '00000000')) {
+      Alert.alert(
+        'Invalid Account',
+        'Please select a valid account before proceeding.',
+      );
+      return;
+    }
+
+    if (!finalAmount || parseFloat(finalAmount) <= 0) {
+      Alert.alert('Invalid Amount', 'Please enter a valid amount.');
+      return;
+    }
+
+    setTipVisible(true);
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <OtherBanktopbar title="QR Payment" />
 
-          <ScrollView
-            style={{ marginHorizontal: 16 }}
-            contentContainerStyle={{
-              paddingBottom: 120,
-              flexDirection: 'column',
-              gap: 300,
-            }}
-          >
+          <ScrollView contentContainerStyle={{ flexDirection: 'column', gap: 1 }}>
             <View>
               <View style={styles.bothtext}>
-                <Text style={styles.firsttext}>Select Account</Text>
-                <Text style={styles.SecondText}>
-                  Select your account and confirm payment
-                </Text>
+                <Text style={styles.firsttext}>{SelectAccount}</Text>
+                <Text style={styles.SecondText}>{nexttext}</Text>
               </View>
 
-              <TouchableOpacity
-                onPress={() => setIsModalVisible(true)}
-                style={styles.borderSelectAccount}
-              >
-                <Text style={styles.SelectAccount}>
-                  {selectedAccount ? selectedAccount : '-Select'}
-                </Text>
-                <Image
-                  source={require('../assets/Downicon.png')}
-                  style={styles.downicon}
-                />
+              {showSelectAccounbig && (
+                <TouchableOpacity
+                  onPress={() => setIsModalVisible(true)}
+                  style={styles.borderSelectAccount}
+                >
+                  <Text style={styles.SelectAccount}>
+                    {selectedAccount ? selectedAccount : '-Select'}
+                  </Text>
+                  <Image source={require('../assets/Downicon.png')} style={styles.downicon} />
 
-                <AccountSheet
-                  visible={isModalVisible}
-                  onClose={() => setIsModalVisible(false)}
-                  onConfirm={(account: React.SetStateAction<string>) =>
-                    setSelectedAccount(account)
-                  }
-                />
-              </TouchableOpacity>
-              <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
+                  <AccountSheet
+                    visible={isModalVisible}
+                    onClose={() => setIsModalVisible(false)}
+                    onConfirm={(account: string) => setSelectedAccount(account)}
+                  />
+                </TouchableOpacity>
+              )}
+
+              {/* ✅ Always show finalAmount */}
+              <Text style={styles.amounttext}>{finalAmount} Birr</Text>
+
+              {showkeypad && (
+                <NumberPad value={amount} onChange={setAmount} showDecimal={true} />
+              )}
             </View>
 
             <View>
-              <CustomButton
-                title="Next"
-                onPress={() => {
-                  if (!selectedAccount || selectedAccount === '00000000') {
-                    Alert.alert(
-                      'Invalid Account',
-                      'Please select a valid account before proceeding.',
-                    );
-                    return;
-                  }
-
-                  setTipVisible(true);
-                }}
-              />
+              <CustomButton title="Next" onPress={handleNext} />
 
               <TipSheet
                 visible={TipVisible}
                 onClose={() => setTipVisible(false)}
-                enableSwitch
-                onOpenBudget={value => {
+                onOpenBudget={(value) => {
                   setTipVisible(false);
                   setTypedTip(value);
                   setBudgetVisible(true);
@@ -113,8 +118,7 @@ const NumberPad = ({ navigation, route }) => {
                 visible={budgetVisible}
                 onClose={closeBudgetVisible}
                 navigation={navigation}
-                scannedAmount={scannedAmount}
-                typedAmount={null}
+                typedAmount={finalAmount}  // ✅ Pass final amount
                 recipient={recipient}
                 typedTip={typedTip}
               />
@@ -126,7 +130,8 @@ const NumberPad = ({ navigation, route }) => {
   );
 };
 
-export default NumberPad;
+
+export default AmountScreen;
 
 const styles = StyleSheet.create({
   container: {
