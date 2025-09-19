@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 
 const CustomTextInput = ({
@@ -9,8 +9,10 @@ const CustomTextInput = ({
   onChangeText,
   keyboardType = 'default',
   showFlag = false,
+  showImage = false, // 👈 NEW PROP
+  imageSource, // 👈 pass your custom image here
   borderRadius = 8,
-  marginTop = 15, // optional: show country flag for phone
+  marginTop = 15,
 }) => {
   return (
     <View
@@ -23,16 +25,29 @@ const CustomTextInput = ({
     >
       {label && <Text style={styles.label}>{label}</Text>}
 
-      {showFlag ? (
+      {showFlag || showImage ? (
         <View style={styles.inputContainer}>
-          <CountryFlag isoCode="ET" size={24} style={styles.flagIcon} />
+          {showFlag && (
+            <CountryFlag isoCode="ET" size={24} style={styles.flagIcon} />
+          )}
+
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput,
+                {
+              borderRadius,
+            },
+            ]}
             placeholder={placeholder}
             value={value}
             onChangeText={onChangeText}
             keyboardType={keyboardType}
           />
+
+          {showImage && imageSource && (
+            <Image source={imageSource} style={styles.leftIcon} />
+          )}
+
+         
         </View>
       ) : (
         <TextInput
@@ -73,10 +88,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // borderWidth: 1,
-
     backgroundColor: '#F8F8F8',
-
     paddingHorizontal: 10,
     height: 50,
   },
@@ -84,9 +96,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 3,
   },
+  leftIcon: {
+    width: 10,
+    height: 6,
+    marginRight: 10,
+    resizeMode: 'contain',
+  },
   textInput: {
     flex: 1,
     fontSize: 14,
     color: 'black',
+  },
+  downicon: {
+    width: 50,
+    height: 6,
   },
 });
