@@ -58,6 +58,9 @@ const AmountScreen = ({ navigation, route }) => {
                 </Text>
               </View>
 
+
+              
+
               <TouchableOpacity
                 onPress={() => setIsModalVisible(true)}
                 style={styles.borderSelectAccount}
@@ -70,13 +73,7 @@ const AmountScreen = ({ navigation, route }) => {
                   style={styles.downicon}
                 />
 
-                <AccountSheet
-                  visible={isModalVisible}
-                  onClose={() => setIsModalVisible(false)}
-                  onConfirm={(account: React.SetStateAction<string>) =>
-                    setSelectedAccount(account)
-                  }
-                />
+              
               </TouchableOpacity>
               <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
             </View>
@@ -100,7 +97,7 @@ const AmountScreen = ({ navigation, route }) => {
               <TipSheet
                 visible={TipVisible}
                 onClose={() => setTipVisible(false)}
-                
+                enableSwitch
                 onOpenBudget={value => {
                   setTipVisible(false);
                   setTypedTip(value);
@@ -122,6 +119,13 @@ const AmountScreen = ({ navigation, route }) => {
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
+        <AccountSheet
+                  visible={isModalVisible}
+                  onClose={() => setIsModalVisible(false)}
+                  onConfirm={(account: React.SetStateAction<string>) =>
+                    setSelectedAccount(account)
+                  }
+                />
     </KeyboardAvoidingView>
   );
 };

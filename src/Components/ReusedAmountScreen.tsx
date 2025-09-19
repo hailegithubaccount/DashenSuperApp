@@ -26,7 +26,9 @@ const AmountScreen = ({
   nexttext = 'Add Amount',
   SelectAccount = 'Select Account',
   showSelectAccounbig = false,
-  showkeypad = false,
+  showkeypad = true,
+  title='Add Account',
+  ShowAccounforTyped=false,
 }) => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -65,7 +67,7 @@ const AmountScreen = ({
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <OtherBanktopbar title="QR Payment" />
+          <OtherBanktopbar title={title} />
 
           <ScrollView contentContainerStyle={{ flexDirection: 'column', gap: 1 }}>
             <View>
@@ -92,7 +94,43 @@ const AmountScreen = ({
                 </TouchableOpacity>
               )}
 
-              {/* ✅ Always show finalAmount */}
+
+{ShowAccounforTyped &&(
+       <View>
+                    <Text style={styles.SelectText}>Select Account</Text>
+              <TouchableOpacity
+                  onPress={() => setIsModalVisible(true)}
+                  style={styles.borderSelectAccount}
+                >
+                  <Text style={styles.SelectAccount}>
+                    {selectedAccount ? selectedAccount : '-Select'}
+                  </Text>
+                  <Image source={require('../assets/Downicon.png')} style={styles.downicon} />
+
+                  <AccountSheet
+                    visible={isModalVisible}
+                    onClose={() => setIsModalVisible(false)}
+                    onConfirm={(account: string) => setSelectedAccount(account)}
+                  />
+                </TouchableOpacity>
+
+                <View style={styles.monay}>
+            <Text style={{ fontSize: 16, color: Colors.third }}>
+            Available Amount:
+            <Text style={{ color: Colors.primary, fontWeight: 'bold' }}>
+              {' '}
+              ETB 20,000.00
+            </Text>
+          </Text>
+        </View>
+  </View>
+      
+
+)}
+              
+              
+
+           
               <Text style={styles.amounttext}>{finalAmount} Birr</Text>
 
               {showkeypad && (
@@ -118,7 +156,7 @@ const AmountScreen = ({
                 visible={budgetVisible}
                 onClose={closeBudgetVisible}
                 navigation={navigation}
-                typedAmount={finalAmount}  // ✅ Pass final amount
+                typedAmount={finalAmount}  
                 recipient={recipient}
                 typedTip={typedTip}
               />
@@ -167,5 +205,12 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: '#989898',
     fontWeight: 'bold',
+  },
+   monay: { marginTop: '5%', alignSelf: 'center' },
+   SelectText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: Colors.third,
+    marginBottom: '2%',
   },
 });

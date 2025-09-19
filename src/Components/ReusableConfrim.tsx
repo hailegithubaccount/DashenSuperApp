@@ -26,11 +26,8 @@ const ConfirmBaseScreen = ({
   showreason = false,
   showInputReason = false,
   showLabelReason = false,
-
   confirmAction = 'modal',
-
   navigateTo,
-
   onConfirmed,
 }) => {
   const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip } =
@@ -89,15 +86,12 @@ const ConfirmBaseScreen = ({
 
   const toggleShowPin = () => setShowPin(v => !v);
 
-  // Called when user presses "verify" inside PIN modal
   const handleVerify = () => {
     if (!isPinComplete) {
-      // simple alert; you can replace with your own UX
       alert(`Please enter ${PIN_LENGTH} digits.`);
       return;
     }
 
-    // show a small confirmation feedback then call onConfirmed
     setShowArrow(true);
 
     setTimeout(() => {
@@ -117,19 +111,16 @@ const ConfirmBaseScreen = ({
       if (typeof onConfirmed === 'function') {
         onConfirmed(paramsToPass);
       } else {
-        // fallback default: navigate to SuccessfulTransaction
         navigation.navigate('SuccessfulTransaction', paramsToPass);
       }
     }, 300);
   };
 
-  // Confirm button handler (either open modal or navigate)
   const handleConfirmPress = () => {
     if (confirmAction === 'modal') {
       openPinModal();
       return;
     } else {
-      // navigate flow
       const paramsToPass = {
         amount,
         recipientAccount,
@@ -142,7 +133,6 @@ const ConfirmBaseScreen = ({
       if (navigateTo) {
         navigation.navigate(navigateTo, paramsToPass);
       } else {
-        // fallback: same as modal success fallback
         navigation.navigate('SuccessfulTransaction', paramsToPass);
       }
     }
@@ -184,7 +174,7 @@ const ConfirmBaseScreen = ({
             value={isBudgetEnabled ? 'ON Budget' : 'OFF Budget'}
           />
 
-          {showTip && <RowItem label="Tip:" value={typedTip ?? 'No tip'} />}
+          {typedTip!=="" && <RowItem label="Tip:" value={typedTip} />}
 
           <RowItem label="Fee:" value="0.00 ETB" />
           <RowItem label="Total:" value={`${amount} ETB`} bold={false} />
@@ -217,7 +207,7 @@ const ConfirmBaseScreen = ({
         </TouchableOpacity>
       </ScrollView>
 
-      {/* PIN Modal */}
+     
       <Modal
         isVisible={isPinModalVisible}
         onBackdropPress={closePinModal}
