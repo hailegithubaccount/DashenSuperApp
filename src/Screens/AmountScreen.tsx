@@ -40,15 +40,16 @@ const AmountScreen = ({ navigation, route }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <OtherBanktopbar title="QR Payment" />
+          <OtherBanktopbar title="Qr Payment" />
 
           <ScrollView
-            style={{ marginHorizontal: 16 }}
+            style={{  }}
             contentContainerStyle={{
-              paddingBottom: 120,
               flexDirection: 'column',
-              gap: 300,
+              gap: 450,
             }}
+            scrollEnabled
+            
           >
             <View>
               <View style={styles.bothtext}>
@@ -58,8 +59,7 @@ const AmountScreen = ({ navigation, route }) => {
                 </Text>
               </View>
 
-
-              
+              <Text>Account Number</Text>
 
               <TouchableOpacity
                 onPress={() => setIsModalVisible(true)}
@@ -72,10 +72,26 @@ const AmountScreen = ({ navigation, route }) => {
                   source={require('../assets/Downicon.png')}
                   style={styles.downicon}
                 />
-
-              
               </TouchableOpacity>
+
               <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
+
+               <View style={styles.tipBox}>
+                <Text style={styles.tipText}>Tip Amount</Text>
+                <Text style={styles.tipAmount}>+ 100.00 Birr</Text>
+              </View>
+
+              <View style={styles.monay}>
+                <Text style={{ fontSize: 16, color: Colors.third }}>
+                  Available Amount:
+                  <Text style={{ color: Colors.primary, fontWeight: 'bold' }}>
+                    {' '}
+                    ETB 20,000.00
+                  </Text>
+                </Text>
+              </View>
+
+             
             </View>
 
             <View>
@@ -97,7 +113,6 @@ const AmountScreen = ({ navigation, route }) => {
               <TipSheet
                 visible={TipVisible}
                 onClose={() => setTipVisible(false)}
-                enableSwitch
                 onOpenBudget={value => {
                   setTipVisible(false);
                   setTypedTip(value);
@@ -119,13 +134,13 @@ const AmountScreen = ({ navigation, route }) => {
           </ScrollView>
         </View>
       </TouchableWithoutFeedback>
-        <AccountSheet
-                  visible={isModalVisible}
-                  onClose={() => setIsModalVisible(false)}
-                  onConfirm={(account: React.SetStateAction<string>) =>
-                    setSelectedAccount(account)
-                  }
-                />
+      <AccountSheet
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={(account: React.SetStateAction<string>) =>
+          setSelectedAccount(account)
+        }
+      />
     </KeyboardAvoidingView>
   );
 };
@@ -136,6 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    paddingHorizontal:16,
   },
   borderSelectAccount: {
     flexDirection: 'row',
@@ -144,9 +160,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
     alignSelf: 'center',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 25,
     alignItems: 'center',
-    width: '90%',
+    width: '95%',
     height: 50,
   },
   SelectAccount: {
@@ -157,7 +173,7 @@ const styles = StyleSheet.create({
     width: 11,
     height: 6,
   },
-  bothtext: { marginHorizontal: 16, marginVertical: 16 },
+  bothtext: { marginHorizontal: 16, marginBottom: 16 },
   firsttext: { marginTop: 24, fontSize: 28, fontWeight: 'bold' },
   SecondText: { fontSize: 16, color: '#757575' },
   amounttext: {
@@ -167,4 +183,18 @@ const styles = StyleSheet.create({
     color: '#989898',
     fontWeight: 'bold',
   },
+  monay: { marginTop: '5%', alignSelf: 'center' },
+  tipBox: {
+    backgroundColor: 'red',
+    width: 100,
+    marginTop: 2,
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 20,
+    alignSelf:'center'
+  },
+  tipText: {
+    alignSelf: 'center',
+  },
+  tipAmount: {},
 });

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     
   },
   iconImage: {
-    width: 34,
-    height: 34,
+    width: 28,
+    height: 28,
   },
 });

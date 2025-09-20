@@ -31,7 +31,7 @@ const CardCarousel = () => {
           id: '1',
           title: 'Send To Dashen',
           image: require('../assets/sendtodashen.png'),
-          onPress: () => navigation.navigate('MiniApp'),
+          onPress: () => navigation.navigate('AmountScreen'),
         },
         {
           id: '2',
