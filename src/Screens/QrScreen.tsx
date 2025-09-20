@@ -56,24 +56,28 @@ const QrScreen: React.FC = () => {
             throw new Error('Invalid QR');
           }
 
-          if (amount && !isNaN(amount) && tip && !isNaN(tip)) {
-            navigation.navigate('QRTipWithAmount', {
-              amount,
-              tip,
-              recipient: {
-                holder: recipientName,
-                AccountNumber: recipientAccount,
-              },
-            });
-          } else if (amount && !isNaN(amount)) {
+          if (amount && !isNaN(amount)) {
             navigation.navigate('AmountScreen', {
               amount,
+              tip: tip && !isNaN(tip) ? tip : null, // pass null if no tip scanned
               recipient: {
                 holder: recipientName,
                 AccountNumber: recipientAccount,
               },
             });
-          } else {
+          } 
+          
+          // else if (amount && !isNaN(amount)) {
+          //   navigation.navigate('AmountScreen', {
+          //     amount,
+          //     recipient: {
+          //       holder: recipientName,
+          //       AccountNumber: recipientAccount,
+          //     },
+          //   });
+          // } 
+          
+          else {
             navigation.navigate('MerchantPaymentScreen', {
               recipient: {
                 holder: recipientName,

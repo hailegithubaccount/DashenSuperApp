@@ -24,6 +24,7 @@ const CustomButton = ({
     <TouchableOpacity
       style={[
         styles.button,
+        
         {
           backgroundColor: disabled ? Colors.third : backgroundColor,
           width,
@@ -31,6 +32,7 @@ const CustomButton = ({
           borderRadius,
           borderWidth: borderColor ? 1 : 0,
           borderColor: borderColor || "transparent",
+         
         },
       ]}
       onPress={onPress}

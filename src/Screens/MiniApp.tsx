@@ -1,183 +1,42 @@
-import {
-  Alert,
-  Button,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import React, { useState } from 'react';
-import CustomButton from '../Components/CustomButton';
-import BudgetSheet from '../ReusableModal/BudgetSheet';
-import AccountSheet from '../ReusableModal/AccounSheet';
-import Colors from '../Components/Colors';
-import TipSheet from '../ReusableModal/TipSheet';
-import OtherBanktopbar from '../Components/otherBanktopbar';
-import CustomTextInput from '../Components/TextInput';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
+import NumberPad from "../Components/NumberPad"; // adjust path
 
-const AmountScreen = ({ navigation, route }) => {
-  const [selectedAccount, setSelectedAccount] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const [TipVisible, setTipVisible] = useState(false);
-  const [budgetVisible, setBudgetVisible] = useState(false);
-
-  const closeBudgetVisible = () => setBudgetVisible(false);
-
-  const { amount: scannedAmount = '0.00', recipient = {} } = route.params || {};
-
-  const [typedTip, setTypedTip] = useState(null);
+const AmountScreen = () => {
+  const [amount, setAmount] = useState("");
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <OtherBanktopbar title="QR Payment" />
+    <View style={styles.container}>
+      {/* Amount Box */}
+      <View style={styles.amountContainer}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => Keyboard.dismiss()}
+        >
+          <View style={styles.amountBox}>
+            <Text style={styles.amountText}>
+              {amount || "0.00"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
 
-          <ScrollView
-            style={{ marginHorizontal: 16 }}
-            contentContainerStyle={{
-              paddingBottom: 120,
-              flexDirection: 'column',
-              gap: 300,
-            }}
-          >
-            <View>
-              <View style={styles.bothtext}>
-                <Text style={styles.firsttext}>Select Account</Text>
-                <Text style={styles.SecondText}>
-                  Select your account and confirm payment
-                </Text>
-              </View>
-
-
-              <CustomTextInput
-              imageSource={require('../assets/Downicon.png')}
-              label={'select Account'}
-              placeholder={selectedAccount ? selectedAccount : '-Select'}
-              value={selectedAccount}
-              onChangeText={setSelectedAccount}
-              onPressInput={() => setIsModalVisible(true)}
-                
-              
-              
-              
-              
-              
-              />
-
-              {/* <TouchableOpacity
-                onPress={() => setIsModalVisible(true)}
-                style={styles.borderSelectAccount}
-              >
-                <Text style={styles.SelectAccount}>
-                  {selectedAccount ? selectedAccount : '-Select'}
-                </Text>
-                <Image
-                  source={require('../assets/Downicon.png')}
-                  style={styles.downicon}
-                />
-
-                <AccountSheet
-                  visible={isModalVisible}
-                  onClose={() => setIsModalVisible(false)}
-                  onConfirm={(account: React.SetStateAction<string>) =>
-                    setSelectedAccount(account)
-                  }
-                />
-              </TouchableOpacity> */}
-              <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
-            </View>
-
-            <View>
-              <CustomButton
-                title="Next"
-                onPress={() => {
-                  if (!selectedAccount || selectedAccount === '00000000') {
-                    Alert.alert(
-                      'Invalid Account',
-                      'Please select a valid account before proceeding.',
-                    );
-                    return;
-                  }
-
-                  setTipVisible(true);
-                }}
-              />
-
-              <TipSheet
-                visible={TipVisible}
-                onClose={() => setTipVisible(false)}
-                enableSwitch
-                onOpenBudget={value => {
-                  setTipVisible(false);
-                  setTypedTip(value);
-                  setBudgetVisible(true);
-                }}
-                navigation={navigation}
-              />
-
-              <BudgetSheet
-                visible={budgetVisible}
-                onClose={closeBudgetVisible}
-                navigation={navigation}
-                scannedAmount={scannedAmount}
-                typedAmount={null}
-                recipient={recipient}
-                typedTip={typedTip}
-              />
-            </View>
-          </ScrollView>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      {/* Number Pad */}
+      <NumberPad value={amount} onChange={setAmount} />
+    </View>
   );
 };
 
 export default AmountScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
+  container: { flex: 1, backgroundColor: "#fff", justifyContent: "flex-end" },
+  amountContainer: { alignItems: "center", marginTop: 50 },
+  amountBox: {
+    borderBottomWidth: 2,
+    borderColor: "#ccc",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
-  borderSelectAccount: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 10,
-    backgroundColor: '#F0F0F0',
-    alignSelf: 'center',
-    padding: 10,
-    borderRadius: 20,
-    alignItems: 'center',
-    width: '90%',
-    height: 50,
-  },
-  SelectAccount: {
-    fontSize: 16,
-    color: Colors.third,
-  },
-  downicon: {
-    width: 11,
-    height: 6,
-  },
-  bothtext: { marginHorizontal: 16, marginVertical: 16 },
-  firsttext: { marginTop: 24, fontSize: 28, fontWeight: 'bold' },
-  SecondText: { fontSize: 16, color: '#757575' },
-  amounttext: {
-    alignSelf: 'center',
-    marginTop: 24,
-    fontSize: 36,
-    color: '#989898',
-    fontWeight: 'bold',
-  },
+  amountText: { fontSize: 32, fontWeight: "bold", color: "#333" },
 });

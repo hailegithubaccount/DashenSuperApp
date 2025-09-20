@@ -39,18 +39,18 @@ const AmountScreen: React.FC<AmountScreen> = ({ navigation, route }) => {
   const [typedTip, setTypedTip] = useState(null);
 
   return (
-    <View style={styles.container}>
-      <OtherBanktopbar title="QR Payment" />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.container}>
+        <OtherBanktopbar title="QR Payment" />
 
-      <ScrollView
-        style={{ marginHorizontal: 16 }}
-        contentContainerStyle={{
-         
-          
-        
-        }}
-      >
-        <View>
+        <ScrollView
+          style={{ marginHorizontal: 16 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 0 }}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.bothtext}>
             <Text style={styles.firsttext}>Select Account</Text>
             <Text style={styles.SecondText}>
@@ -71,9 +71,7 @@ const AmountScreen: React.FC<AmountScreen> = ({ navigation, route }) => {
             />
           </TouchableOpacity>
           <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
-        </View>
 
-        <View>
           <CustomButton
             title="Next"
             onPress={() => {
@@ -109,17 +107,17 @@ const AmountScreen: React.FC<AmountScreen> = ({ navigation, route }) => {
             recipient={recipient}
             typedTip={typedTip}
           />
-        </View>
+        </ScrollView>
+      </View>
 
-        <AccountSheet
-          visible={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
-          onConfirm={(account: React.SetStateAction<string>) =>
-            setSelectedAccount(account)
-          }
-        />
-      </ScrollView>
-    </View>
+      <AccountSheet
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={(account: React.SetStateAction<string>) =>
+          setSelectedAccount(account)
+        }
+      />
+    </KeyboardAvoidingView>
   );
 };
 
