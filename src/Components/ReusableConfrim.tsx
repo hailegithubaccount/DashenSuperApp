@@ -43,8 +43,6 @@ const ConfirmBaseScreen = ({
   } = route.params || {};
   const [reason, setReason] = useState('');
 
-
-
   // const [isPinModalVisible, setPinModalVisible] = useState(false);
 
   // const emptyPin = () => Array(PIN_LENGTH).fill('');
@@ -154,10 +152,6 @@ const ConfirmBaseScreen = ({
   //   }
   // };
 
-
-
-
-
   const [isPinModalVisible, setPinModalVisible] = useState(false);
 
   const handleConfirmPress = () => {
@@ -171,11 +165,10 @@ const ConfirmBaseScreen = ({
     };
 
     if (requestType === 'qr') {
-      navigation.navigate('PINConfirmation', paramsToPass); // separate screen
+      navigation.navigate('PINConfirmation', paramsToPass);
       return;
     }
 
-    
     setPinModalVisible(true);
   };
   const RowItem = ({ label, value, bold = false }) => (
@@ -433,58 +426,58 @@ const styles = StyleSheet.create({
   },
 
   /* modal/pin styles */
-  modal: { justifyContent: 'flex-end', margin: 0 },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 30,
-  },
-  modalTitle: { fontSize: 22, fontWeight: '600', textAlign: 'center' },
-  modalTitle2: { textAlign: 'center', color: Colors.third, marginBottom: 12 },
+  // modal: { justifyContent: 'flex-end', margin: 0 },
+  // modalContent: {
+  //   backgroundColor: 'white',
+  //   padding: 20,
+  //   borderTopLeftRadius: 20,
+  //   borderTopRightRadius: 20,
+  //   paddingBottom: 30,
+  // },
+  // modalTitle: { fontSize: 22, fontWeight: '600', textAlign: 'center' },
+  // modalTitle2: { textAlign: 'center', color: Colors.third, marginBottom: 12 },
 
-  pinContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 12,
-  },
-  pinBox: {
-    width: 45,
-    height: 55,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F0F0F0',
-  },
-  pinText: { fontSize: 22, fontWeight: 'bold' },
-  showPinButton: { marginBottom: 12 },
-  asharimage: { width: 44, height: 47, alignSelf: 'center', marginBottom: 12 },
+  // pinContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   marginVertical: 12,
+  // },
+  // pinBox: {
+  //   width: 45,
+  //   height: 55,
+  //   borderRadius: 10,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   backgroundColor: '#F0F0F0',
+  // },
+  // pinText: { fontSize: 22, fontWeight: 'bold' },
+  // showPinButton: { marginBottom: 12 },
+  // asharimage: { width: 44, height: 47, alignSelf: 'center', marginBottom: 12 },
 
-  keyboardContainer: {
-    width: '100%',
-    height: 310,
-    backgroundColor: '#f0f0f0',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  key: {
-    flex: 1,
-    marginHorizontal: 5,
-    height: 60,
-    borderRadius: 10,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 0.2,
-    borderColor: 'rgba(0,0,0,0.2)',
-  },
-  keyText: { fontSize: 20, fontWeight: 'bold' },
-  iconsx: { alignSelf: 'flex-end' },
-  footer: {},
+  // keyboardContainer: {
+  //   width: '100%',
+  //   height: 310,
+  //   backgroundColor: '#f0f0f0',
+  //   paddingHorizontal: 20,
+  //   paddingVertical: 18,
+  // },
+  // row: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   marginBottom: 10,
+  // },
+  // key: {
+  //   flex: 1,
+  //   marginHorizontal: 5,
+  //   height: 60,
+  //   borderRadius: 10,
+  //   backgroundColor: '#fff',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   borderWidth: 0.2,
+  //   borderColor: 'rgba(0,0,0,0.2)',
+  // },
+  // keyText: { fontSize: 20, fontWeight: 'bold' },
+  // iconsx: { alignSelf: 'flex-end' },
+  // footer: {},
 });
