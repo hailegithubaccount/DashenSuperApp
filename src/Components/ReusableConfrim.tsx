@@ -17,6 +17,7 @@ import Colors from './Colors';
 import OtherBanktopbar from './otherBanktopbar';
 import CustomButton from './CustomButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PINVerification from '../Components/PinModal';
 
 const PIN_LENGTH = 6;
 
@@ -32,123 +33,140 @@ const ConfirmBaseScreen = ({
   navigateTo,
   onConfirmed,
 }) => {
-  const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip, requestType } =
-  route.params || {};
+  const {
+    amount,
+    recipientAccount,
+    recipientName,
+    isBudgetEnabled,
+    typedTip,
+    requestType,
+  } = route.params || {};
   const [reason, setReason] = useState('');
-  const [isPinModalVisible, setPinModalVisible] = useState(false);
+  // const [isPinModalVisible, setPinModalVisible] = useState(false);
 
   const emptyPin = () => Array(PIN_LENGTH).fill('');
   const [pin, setPin] = useState(emptyPin());
   const [showPin, setShowPin] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
 
-  const numberKeys = [
-    ['1', '2', '3'],
-    ['4', '5', '6'],
-    ['7', '8', '9'],
-  ];
+  // const numberKeys = [
+  //   ['1', '2', '3'],
+  //   ['4', '5', '6'],
+  //   ['7', '8', '9'],
+  // ];
 
-  const isPinComplete = pin.every(d => d !== '');
+  // const isPinComplete = pin.every(d => d !== '');
 
-  const openPinModal = () => {
-    setPin(emptyPin());
-    setShowArrow(false);
-    setPinModalVisible(true);
-    Keyboard.dismiss();
-  };
+  // const openPinModal = () => {
+  //   setPin(emptyPin());
+  //   setShowArrow(false);
+  //   setPinModalVisible(true);
+  //   Keyboard.dismiss();
+  // };
 
-  const closePinModal = () => {
-    setPin(emptyPin());
-    setShowArrow(false);
-    setPinModalVisible(false);
-  };
+  // const closePinModal = () => {
+  //   setPin(emptyPin());
+  //   setShowArrow(false);
+  //   setPinModalVisible(false);
+  // };
 
-  const handleKeyPress = key => {
-    setPin(prev => {
-      const copy = [...prev];
-      const firstEmpty = copy.findIndex(d => d === '');
-      if (firstEmpty === -1) return copy;
-      copy[firstEmpty] = key;
-      return copy;
-    });
-  };
+  // const handleKeyPress = key => {
+  //   setPin(prev => {
+  //     const copy = [...prev];
+  //     const firstEmpty = copy.findIndex(d => d === '');
+  //     if (firstEmpty === -1) return copy;
+  //     copy[firstEmpty] = key;
+  //     return copy;
+  //   });
+  // };
 
-  const handleBackspace = () => {
-    setPin(prev => {
-      const copy = [...prev];
-      for (let i = copy.length - 1; i >= 0; i--) {
-        if (copy[i] !== '') {
-          copy[i] = '';
-          break;
-        }
-      }
-      return copy;
-    });
-  };
+  // const handleBackspace = () => {
+  //   setPin(prev => {
+  //     const copy = [...prev];
+  //     for (let i = copy.length - 1; i >= 0; i--) {
+  //       if (copy[i] !== '') {
+  //         copy[i] = '';
+  //         break;
+  //       }
+  //     }
+  //     return copy;
+  //   });
+  // };
 
-  const toggleShowPin = () => setShowPin(v => !v);
+  // const toggleShowPin = () => setShowPin(v => !v);
 
-  const handleVerify = () => {
-    if (!isPinComplete) {
-      alert(`Please enter ${PIN_LENGTH} digits.`);
-      return;
-    }
+  // const handleVerify = () => {
+  //   if (!isPinComplete) {
+  //     alert(`Please enter ${PIN_LENGTH} digits.`);
+  //     return;
+  //   }
 
-    setShowArrow(true);
+  //   setShowArrow(true);
 
-    setTimeout(() => {
-      setShowArrow(false);
-      setPin(emptyPin());
-      setPinModalVisible(false);
+  //   setTimeout(() => {
+  //     setShowArrow(false);
+  //     setPin(emptyPin());
+  //     setPinModalVisible(false);
 
-      const paramsToPass = {
-        amount,
-        recipientAccount,
-        recipientName,
-        isBudgetEnabled,
-        reason,
-        typedTip,
-      };
+  //     const paramsToPass = {
+  //       amount,
+  //       recipientAccount,
+  //       recipientName,
+  //       isBudgetEnabled,
+  //       reason,
+  //       typedTip,
+  //     };
 
-      if (typeof onConfirmed === 'function') {
-        onConfirmed(paramsToPass);
-      } else {
-        navigation.navigate('SuccessfulTransaction', paramsToPass);
-      }
-    }, 300);
-  };
+  //     if (typeof onConfirmed === 'function') {
+  //       onConfirmed(paramsToPass);
+  //     } else {
+  //       navigation.navigate('SuccessfulTransaction', paramsToPass);
+  //     }
+  //   }, 300);
+  // };
+
+  // const handleConfirmPress = () => {
+  //   const paramsToPass = {
+  //     amount,
+  //     recipientAccount,
+  //     recipientName,
+  //     isBudgetEnabled,
+  //     reason,
+  //     typedTip,
+  //   };
+
+  //   if (requestType === 'qr') {
+  //     navigation.navigate('PINConfirmation', paramsToPass);
+  //     return;
+  //   }
+
+  //   if (requestType !== 'qr') {
+  //     openPinModal();
+  //   } else {
+  //     if (navigateTo) {
+  //       navigation.navigate(navigateTo, paramsToPass);
+  //     } else {
+  //       navigation.navigate('SuccessfulTransaction', paramsToPass);
+  //     }
+  //   }
+  // };
 
 
+
+
+const [isPinModalVisible, setPinModalVisible] = useState(false);
 
 const handleConfirmPress = () => {
-  const paramsToPass = {
-    amount,
-    recipientAccount,
-    recipientName,
-    isBudgetEnabled,
-    reason,
-    typedTip,
-  };
+  const paramsToPass = { amount, recipientAccount, recipientName, isBudgetEnabled, reason, typedTip };
 
-  
   if (requestType === 'qr') {
-    navigation.navigate('PINConfirmation', paramsToPass);
+    navigation.navigate('PINConfirmation', paramsToPass); // separate screen
     return;
   }
 
- 
-  if (requestType !== 'qr') {
-    openPinModal();
-  } else {
-    if (navigateTo) {
-      navigation.navigate(navigateTo, paramsToPass);
-    } else {
-      navigation.navigate('SuccessfulTransaction', paramsToPass);
-    }
-  }
+  // otherwise, open modal
+  setPinModalVisible(true);
 };
-
-
   const RowItem = ({ label, value, bold = false }) => (
     <View style={styles.rowItem}>
       <Text style={[styles.firstText, bold && { fontWeight: '600' }]}>
@@ -161,12 +179,10 @@ const handleConfirmPress = () => {
   );
 
   return (
-
     <View style={styles.container}>
       <SafeAreaView>
         <OtherBanktopbar title="Confirm Transfer" />
       </SafeAreaView>
-      
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={styles.coverimage}>
@@ -208,17 +224,34 @@ const handleConfirmPress = () => {
         )}
       </ScrollView>
 
-       <View style={styles.footer}>
-      <CustomButton title="Confirm" onPress={handleConfirmPress} />
-      <CustomButton
-        backgroundColor="white"
-        title="Cancel"
-        textColor="blue"
-        onPress={() => navigation.goBack()}
-      />
-    </View>
+      <View style={styles.footer}>
+        <CustomButton title="Confirm" onPress={handleConfirmPress} />
+        <CustomButton
+          backgroundColor="white"
+          title="Cancel"
+          textColor="blue"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
 
-      <Modal
+
+      <PINVerification
+  visible={isPinModalVisible}
+  onClose={() => setPinModalVisible(false)}
+  onVerified={() => {
+    setPinModalVisible(false);
+    navigation.navigate('SuccessfulTransaction', {
+      amount,
+      recipientAccount,
+      recipientName,
+      isBudgetEnabled,
+      reason,
+      typedTip,
+    });
+  }}
+/>
+
+      {/* <Modal
         isVisible={isPinModalVisible}
         onBackdropPress={closePinModal}
         style={styles.modal}
@@ -310,7 +343,7 @@ const handleConfirmPress = () => {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -443,10 +476,5 @@ const styles = StyleSheet.create({
   },
   keyText: { fontSize: 20, fontWeight: 'bold' },
   iconsx: { alignSelf: 'flex-end' },
-  footer: {
-
- 
- 
-},
-
+  footer: {},
 });
