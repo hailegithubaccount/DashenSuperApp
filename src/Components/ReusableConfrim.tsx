@@ -42,12 +42,15 @@ const ConfirmBaseScreen = ({
     requestType,
   } = route.params || {};
   const [reason, setReason] = useState('');
+
+
+
   // const [isPinModalVisible, setPinModalVisible] = useState(false);
 
-  const emptyPin = () => Array(PIN_LENGTH).fill('');
-  const [pin, setPin] = useState(emptyPin());
-  const [showPin, setShowPin] = useState(false);
-  const [showArrow, setShowArrow] = useState(false);
+  // const emptyPin = () => Array(PIN_LENGTH).fill('');
+  // const [pin, setPin] = useState(emptyPin());
+  // const [showPin, setShowPin] = useState(false);
+  // const [showArrow, setShowArrow] = useState(false);
 
   // const numberKeys = [
   //   ['1', '2', '3'],
@@ -154,19 +157,27 @@ const ConfirmBaseScreen = ({
 
 
 
-const [isPinModalVisible, setPinModalVisible] = useState(false);
 
-const handleConfirmPress = () => {
-  const paramsToPass = { amount, recipientAccount, recipientName, isBudgetEnabled, reason, typedTip };
+  const [isPinModalVisible, setPinModalVisible] = useState(false);
 
-  if (requestType === 'qr') {
-    navigation.navigate('PINConfirmation', paramsToPass); // separate screen
-    return;
-  }
+  const handleConfirmPress = () => {
+    const paramsToPass = {
+      amount,
+      recipientAccount,
+      recipientName,
+      isBudgetEnabled,
+      reason,
+      typedTip,
+    };
 
-  // otherwise, open modal
-  setPinModalVisible(true);
-};
+    if (requestType === 'qr') {
+      navigation.navigate('PINConfirmation', paramsToPass); // separate screen
+      return;
+    }
+
+    
+    setPinModalVisible(true);
+  };
   const RowItem = ({ label, value, bold = false }) => (
     <View style={styles.rowItem}>
       <Text style={[styles.firstText, bold && { fontWeight: '600' }]}>
@@ -234,22 +245,21 @@ const handleConfirmPress = () => {
         />
       </View>
 
-
       <PINVerification
-  visible={isPinModalVisible}
-  onClose={() => setPinModalVisible(false)}
-  onVerified={() => {
-    setPinModalVisible(false);
-    navigation.navigate('SuccessfulTransaction', {
-      amount,
-      recipientAccount,
-      recipientName,
-      isBudgetEnabled,
-      reason,
-      typedTip,
-    });
-  }}
-/>
+        visible={isPinModalVisible}
+        onClose={() => setPinModalVisible(false)}
+        onVerified={() => {
+          setPinModalVisible(false);
+          navigation.navigate('SuccessfulTransaction', {
+            amount,
+            recipientAccount,
+            recipientName,
+            isBudgetEnabled,
+            reason,
+            typedTip,
+          });
+        }}
+      />
 
       {/* <Modal
         isVisible={isPinModalVisible}
