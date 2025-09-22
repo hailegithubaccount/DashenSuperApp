@@ -25,13 +25,12 @@ const ConfirmBaseScreen = ({
   route,
   navigation,
   imageSource,
-  showTip = false,
+ 
   showreason = false,
   showInputReason = true,
   showLabelReason = false,
-  confirmAction = 'modal',
-  navigateTo,
-  onConfirmed,
+ 
+  
 }) => {
   const {
     amount,
