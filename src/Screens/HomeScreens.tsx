@@ -438,8 +438,8 @@ const styles = StyleSheet.create({
   },
   headerSafe: {
     backgroundColor: '#fff',
-    zIndex: 1000,
-    height: 60,
+    zIndex: 999,
+    height: 100,
   },
   scrollContainer: {
     paddingBottom: 20,
@@ -665,8 +665,8 @@ const styles = StyleSheet.create({
   },
   cardButton: {
     backgroundColor: 'rgba(255,255,255,0.1)',
-    width: 160,
-    height: 125,
+    width:'45%',
+    height: 'auto',
     borderRadius: 20,
     alignItems: 'center',
     paddingHorizontal: 10,

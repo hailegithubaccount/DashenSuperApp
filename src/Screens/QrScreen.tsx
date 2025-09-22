@@ -59,7 +59,8 @@ const QrScreen: React.FC = () => {
           if (amount && !isNaN(amount)) {
             navigation.navigate('AmountScreen', {
               amount,
-              tip: tip && !isNaN(tip) ? tip : null, // pass null if no tip scanned
+              tip: tip && !isNaN(tip) ? tip : null, 
+              requestType: 'qr',
               recipient: {
                 holder: recipientName,
                 AccountNumber: recipientAccount,
@@ -79,6 +80,7 @@ const QrScreen: React.FC = () => {
           
           else {
             navigation.navigate('MerchantPaymentScreen', {
+              requestType: 'qr',
               recipient: {
                 holder: recipientName,
                 AccountNumber: recipientAccount,
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
   overlayTop: { flex: 1, width: '100%', backgroundColor: 'rgba(0,0,0,0.6)' },
   overlayBottom: { flex: 1, width: '100%', backgroundColor: 'rgba(0,0,0,0.6)' },
   overlaySide: {
-    width: 50,
+    width: 100,
     height: BOX_SIZE,
     backgroundColor: 'rgba(0,0,0,0.6)',
   },

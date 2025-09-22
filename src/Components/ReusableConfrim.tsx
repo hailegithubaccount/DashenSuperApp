@@ -15,6 +15,8 @@ import {
 import Modal from 'react-native-modal';
 import Colors from './Colors';
 import OtherBanktopbar from './otherBanktopbar';
+import CustomButton from './CustomButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PIN_LENGTH = 6;
 
@@ -24,14 +26,14 @@ const ConfirmBaseScreen = ({
   imageSource,
   showTip = false,
   showreason = false,
-  showInputReason = false,
+  showInputReason = true,
   showLabelReason = false,
   confirmAction = 'modal',
   navigateTo,
   onConfirmed,
 }) => {
-  const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip } =
-    route.params || {};
+  const { amount, recipientAccount, recipientName, isBudgetEnabled, typedTip, requestType } =
+  route.params || {};
   const [reason, setReason] = useState('');
   const [isPinModalVisible, setPinModalVisible] = useState(false);
 
@@ -116,27 +118,36 @@ const ConfirmBaseScreen = ({
     }, 300);
   };
 
-  const handleConfirmPress = () => {
-    if (confirmAction === 'modal') {
-      openPinModal();
-      return;
-    } else {
-      const paramsToPass = {
-        amount,
-        recipientAccount,
-        recipientName,
-        isBudgetEnabled,
-        reason,
-        typedTip,
-      };
 
-      if (navigateTo) {
-        navigation.navigate(navigateTo, paramsToPass);
-      } else {
-        navigation.navigate('SuccessfulTransaction', paramsToPass);
-      }
-    }
+
+const handleConfirmPress = () => {
+  const paramsToPass = {
+    amount,
+    recipientAccount,
+    recipientName,
+    isBudgetEnabled,
+    reason,
+    typedTip,
   };
+
+  
+  if (requestType === 'qr') {
+    navigation.navigate('PINConfirmation', paramsToPass);
+    return;
+  }
+
+ 
+  if (requestType !== 'qr') {
+    openPinModal();
+  } else {
+    if (navigateTo) {
+      navigation.navigate(navigateTo, paramsToPass);
+    } else {
+      navigation.navigate('SuccessfulTransaction', paramsToPass);
+    }
+  }
+};
+
 
   const RowItem = ({ label, value, bold = false }) => (
     <View style={styles.rowItem}>
@@ -150,8 +161,12 @@ const ConfirmBaseScreen = ({
   );
 
   return (
+
     <View style={styles.container}>
-      <OtherBanktopbar title="Confirm Transfer" />
+      <SafeAreaView>
+        <OtherBanktopbar title="Confirm Transfer" />
+      </SafeAreaView>
+      
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         <View style={styles.coverimage}>
@@ -174,7 +189,7 @@ const ConfirmBaseScreen = ({
             value={isBudgetEnabled ? 'ON Budget' : 'OFF Budget'}
           />
 
-          {typedTip!=="" && <RowItem label="Tip:" value={typedTip} />}
+          {typedTip !== '' && <RowItem label="Tip:" value={typedTip} />}
 
           <RowItem label="Fee:" value="0.00 ETB" />
           <RowItem label="Total:" value={`${amount} ETB`} bold={false} />
@@ -191,23 +206,18 @@ const ConfirmBaseScreen = ({
             onChangeText={setReason}
           />
         )}
-
-        <TouchableOpacity
-          style={styles.confirmButton}
-          onPress={handleConfirmPress}
-        >
-          <Text style={styles.confirmText}>Confirm</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
       </ScrollView>
 
-     
+       <View style={styles.footer}>
+      <CustomButton title="Confirm" onPress={handleConfirmPress} />
+      <CustomButton
+        backgroundColor="white"
+        title="Cancel"
+        textColor="blue"
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+
       <Modal
         isVisible={isPinModalVisible}
         onBackdropPress={closePinModal}
@@ -368,7 +378,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 30,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: '20%',
   },
   cancelButton: { padding: 15, borderRadius: 30, alignItems: 'center' },
   confirmText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
@@ -433,4 +443,10 @@ const styles = StyleSheet.create({
   },
   keyText: { fontSize: 20, fontWeight: 'bold' },
   iconsx: { alignSelf: 'flex-end' },
+  footer: {
+
+ 
+ 
+},
+
 });

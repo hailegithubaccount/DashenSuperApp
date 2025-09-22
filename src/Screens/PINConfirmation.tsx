@@ -11,6 +11,7 @@ import {
 import React, { useState } from 'react';
 import OtherBanktopbar from '../Components/otherBanktopbar';
 import Colors from '../Components/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PIN_LENGTH = 4;
 const emptyPin = () => Array(PIN_LENGTH).fill('');
@@ -53,7 +54,11 @@ const PINConfirmation = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <OtherBanktopbar title="PIN Confirmation" />
+      <SafeAreaView>
+         <OtherBanktopbar title="PIN Confirmation" />
+
+      </SafeAreaView>
+     
 
       <ScrollView
         showsVerticalScrollIndicator={false}

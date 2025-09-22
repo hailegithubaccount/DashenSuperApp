@@ -16,11 +16,11 @@ const NumberPad: React.FC<NumberPadProps> = ({
     ['1', '2', '3'],
     ['4', '5', '6'],
     ['7', '8', '9'],
-    [showDecimal ? '.' : '', '0', '⌫'], // last row with 0 centered
+    [showDecimal ? '.' : '', '0', '⌫'], 
   ];
 
   const handleKeyPress = (key: string) => {
-    if (!key) return; // skip empty
+    if (!key) return; 
     if (key === '.' && !showDecimal) return;
     if (key === '.' && value.includes('.')) return;
     if (key === '⌫') {
@@ -54,20 +54,23 @@ export default NumberPad;
 
 const styles = StyleSheet.create({
   keyboardContainer: {
-    backgroundColor: '#FBFBFB',
+    backgroundColor: 'white',
+    marginHorizontal:"2%"
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 10,
+    marginBottom: '3%',
   },
   key: {
-    width: 80,
+    width: "30%",
     height: 70,
     borderRadius: 8,
+    borderWidth:2,
+    borderColor:'#FBFBFB',
     backgroundColor: '#FBFBFB',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  keyText: { fontSize: 28 },
+  keyText: { fontSize: 31 },
 });

@@ -16,6 +16,7 @@ import Colors from '../Components/Colors';
 import CustomTextInput from '../Components/TextInput';
 import HistoryList from '../Components/History';
 import CustomButton from '../Components/CustomButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EnterAccountNumber = ({ navigation, route }) => {
   const { bankItem } = route.params;
@@ -64,8 +65,7 @@ const EnterAccountNumber = ({ navigation, route }) => {
   const [placeholder, setPlaceholder] = useState('000000000000');
   const [historySelected, setHistorySelected] = useState(false);
 
-
-    const handleCheckAccount = () => {
+  const handleCheckAccount = () => {
     const accountToCheck = account !== '' ? account : placeholder;
     const found = accounts.find(a => a.AccountNumber === accountToCheck);
     setSelectedAccount(found || 'not-found');
@@ -78,7 +78,11 @@ const EnterAccountNumber = ({ navigation, route }) => {
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
-          <OtherBanktopbar title="Transfer to other bank" />
+          <SafeAreaView>
+  <OtherBanktopbar title="Transfer to other bank" />
+          </SafeAreaView>
+          
+         
           <View style={{ backgroundColor: 'white', flex: 1 }}>
             <View style={styles.TopText}>
               <Text style={styles.FirstText}>Enter Account Number</Text>
@@ -104,9 +108,9 @@ const EnterAccountNumber = ({ navigation, route }) => {
                 history={history}
                 bankImage={bankItem.image}
                 onSelect={item => {
-                  setPlaceholder(item.AccountNumber); 
-                  setAccount(''); 
-                  setSelectedAccount(null); 
+                  setPlaceholder(item.AccountNumber);
+                  setAccount('');
+                  setSelectedAccount(null);
                   setHistorySelected(true);
                 }}
               />
@@ -114,62 +118,69 @@ const EnterAccountNumber = ({ navigation, route }) => {
 
             {/* Show account only AFTER pressing Check */}
             {selectedAccount && selectedAccount !== 'not-found' && (
-              <TouchableOpacity   
-               style={{
-                margin:8,
-                
-               }}
-              
-              onPress={() =>
-                        navigation.navigate('TypeMoneyScreen', {recipient:selectedAccount}
-                        )
-                      }>
-                 <ImageBackground
-                source={selectedAccount.ImageBackground}
-                style={styles.backgroundimage}
+              <TouchableOpacity
+                style={{
+                  margin: 8,
+                }}
+                // onPress={() =>
+                //           navigation.navigate('TypeMoneyScreen', {recipient:selectedAccount}
+                //           )
+                //         }>
+
+                onPress={() =>
+                  navigation.navigate('MiniApp', {
+                    recipient: {
+                      holder: selectedAccount.holder,
+                      AccountNumber: selectedAccount.AccountNumber,
+                   
+                    },
+                  })
+                }
               >
-                <View style={styles.AccountBox}>
-                  <View style={styles.bothimageandtextfordisplayaccount}>
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        borderWidth: 1,
-                        borderRadius: 50,
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                      }}
-                    >
-                      {selectedAccount.image && (
+                <ImageBackground
+                  source={selectedAccount.ImageBackground}
+                  style={styles.backgroundimage}
+                >
+                  <View style={styles.AccountBox}>
+                    <View style={styles.bothimageandtextfordisplayaccount}>
+                      <View
+                        style={{
+                          width: 65,
+                          height: 65,
+                          borderWidth: 1,
+                          borderRadius: 50,
+                          justifyContent: 'center',
+                          alignContent: 'center',
+                        }}
+                      >
+                        {selectedAccount.image && (
+                          <Image
+                            source={selectedAccount.image}
+                            style={styles.imageofaccountdisplay}
+                          />
+                        )}
+                      </View>
+                      <View style={styles.holderPLUSaccount}>
+                        <Text style={styles.holderName}>
+                          {selectedAccount.holder}
+                        </Text>
+                        <Text style={styles.holderAccount}>
+                          {selectedAccount.AccountNumber}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={{ justifyContent: 'center' }}>
+                      <TouchableOpacity>
                         <Image
-                          source={selectedAccount.image}
-                          style={styles.imageofaccountdisplay}
+                          source={selectedAccount.imageback}
+                          style={styles.backiconforaccount}
                         />
-                      )}
-                    </View>
-                    <View style={styles.holderPLUSaccount}>
-                      <Text style={styles.holderName}>
-                        {selectedAccount.holder}
-                      </Text>
-                      <Text style={styles.holderAccount}>
-                        {selectedAccount.AccountNumber}
-                      </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
-
-                  <View style={{ justifyContent: 'center' }}>
-                    <TouchableOpacity>
-                      <Image
-                        source={selectedAccount.imageback}
-                        style={styles.backiconforaccount}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </ImageBackground>
-
+                </ImageBackground>
               </TouchableOpacity>
-             
             )}
 
             {/* If not found */}
@@ -182,14 +193,13 @@ const EnterAccountNumber = ({ navigation, route }) => {
 
           {/* Floating Bottom Button */}
           <View style={[styles.bottomButton, { bottom: 20 }]}>
-           
-
-              <CustomButton
-            title={historySelected || account !== '' ? 'Check Account' : 'Next'}
-            onPress={handleCheckAccount}
-            borderRadius={50}
-          />
-            
+            <CustomButton
+              title={
+                historySelected || account !== '' ? 'Check Account' : 'Next'
+              }
+              onPress={handleCheckAccount}
+              borderRadius={50}
+            />
           </View>
         </View>
       </ScrollView>
@@ -295,14 +305,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   backgroundimage: {
-    marginHorizontal:8,
+    marginHorizontal: 8,
     borderRadius: 100,
   },
   AccountBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: '3%',
-    marginBottom:8,
+    marginBottom: 8,
   },
   backiconforaccount: {
     width: 24,

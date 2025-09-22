@@ -43,6 +43,7 @@ const CardCarousel = () => {
           id: '3',
           title: 'Send To Wallet',
           image: require('../assets/IC_Wallet.png'),
+          onPress: () => navigation.navigate('AmountScreen'),
         },
         {
           id: '4',
@@ -323,19 +324,22 @@ const styles = StyleSheet.create({
   accountName: { fontSize: 16, color: 'white' },
   balanceAmount: { fontSize: 28, fontWeight: 'bold', color: 'white' },
   buttonRow: {
+    marginHorizontal:"2%",
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap:30,
+   
   },
   botton: {
     flexDirection: 'row',
-    gap: 10,
-    width: 150,
-    height: 48,
+    gap: 5,
+    width: '45%',
+    height: 'auto',
     backgroundColor: 'rgba(255,255,255,0.07)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    marginBottom: 6,
+    marginBottom: '2%',
+    marginVertical:'3%'
   },
   icon: {
     width: 30,

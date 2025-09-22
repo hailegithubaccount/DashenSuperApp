@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  SafeAreaView // Import SafeAreaView for better handling on iOS devices
+  // Import SafeAreaView for better handling on iOS devices
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 import CustomButton from '../Components/CustomButton';
 import BudgetSheet from '../ReusableModal/BudgetSheet';
@@ -16,7 +17,7 @@ import Colors from '../Components/Colors';
 import TipSheet from '../ReusableModal/TipSheet';
 import OtherBanktopbar from '../Components/otherBanktopbar';
 
-const AmountScreen= ({ navigation, route }) => {
+const AmountScreen = ({ navigation, route }) => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -33,8 +34,6 @@ const AmountScreen= ({ navigation, route }) => {
 
   const [typedTip, setTypedTip] = useState(null);
 
-
-
   const handleNextPress = () => {
     if (!selectedAccount || selectedAccount === '00000000') {
       Alert.alert(
@@ -45,21 +44,21 @@ const AmountScreen= ({ navigation, route }) => {
     }
 
     if (scannedTip) {
-      // if QR already includes a tip → go directly to Budget
       setTypedTip(scannedTip);
       setBudgetVisible(true);
     } else {
-      // if QR has no tip → open TipSheet so user can type
       setTipVisible(true);
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}> 
-      <OtherBanktopbar title="QR Payment" />
+    <View style={styles.container}>
+      <SafeAreaView>
+        <OtherBanktopbar title="QR Payment" />
+      </SafeAreaView>
 
       <ScrollView
-        style={styles.scrollViewContent} 
+        style={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewInner}
       >
@@ -88,10 +87,9 @@ const AmountScreen= ({ navigation, route }) => {
           <Text style={styles.amounttext}>{scannedAmount} Birr</Text>
           {scannedTip && (
             <View style={styles.tipBox}>
-            <Text style={styles.tiptext}>Tip Amount</Text>
-            <Text style={styles.tipprice}>{scannedTip}</Text>
-          </View>
-
+              <Text style={styles.tiptext}>Tip Amount</Text>
+              <Text style={styles.tipprice}>{scannedTip}</Text>
+            </View>
           )}
 
           <View style={styles.monay}>
@@ -104,19 +102,11 @@ const AmountScreen= ({ navigation, route }) => {
             </Text>
           </View>
         </View>
-
-        
-
       </ScrollView>
 
-   
       <View style={styles.bottomButtonContainer}>
-        <CustomButton
-          title="Next"
-          onPress={handleNextPress}
-        />
+        <CustomButton title="Next" onPress={handleNextPress} />
       </View>
-
 
       <TipSheet
         visible={TipVisible}
@@ -147,7 +137,7 @@ const AmountScreen= ({ navigation, route }) => {
           setSelectedAccount(account)
         }
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -158,37 +148,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  scrollViewContent: { 
+
+  scrollViewContent: {
     flex: 1,
   },
-  scrollViewInner: { 
-    paddingHorizontal: 16, 
-    paddingBottom: 100, 
+  scrollViewInner: {
+    paddingHorizontal: 16,
+    paddingBottom: 100,
   },
   bottomButtonContainer: {
-    position: 'absolute', 
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 16, 
-    paddingBottom: 20, 
-    backgroundColor: 'white', 
-   
-  
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+    backgroundColor: 'white',
   },
   borderSelectAccount: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
     backgroundColor: '#F0F0F0',
-    alignSelf: 'center', 
+    alignSelf: 'center',
     padding: 10,
     borderRadius: 25,
     alignItems: 'center',
-    width: '95%', 
+    width: '95%',
     height: 50,
     marginTop: 3,
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   SelectAccount: {
     fontSize: 16,
@@ -198,7 +187,7 @@ const styles = StyleSheet.create({
     width: 11,
     height: 6,
   },
-  bothtext: { marginBottom: 16 }, 
+  bothtext: { marginBottom: 16 },
   firsttext: { marginTop: 24, fontSize: 28, fontWeight: 'bold' },
   SecondText: { fontSize: 16, color: '#757575', marginTop: 8 },
   amounttext: {

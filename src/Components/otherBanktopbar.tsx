@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   headerSafe: {
     backgroundColor: '#fff',
     zIndex: 999,
-    height: 60,
+    height:"3%",
   },
   header: {
     flexDirection: 'row',

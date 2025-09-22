@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
+
   Image,
   ScrollView,
   TextInput,
@@ -13,6 +13,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import OtherBanktopbar from '../Components/otherBanktopbar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SendToOtherBank = () => {
   const navigation = useNavigation();
@@ -118,7 +119,11 @@ const SendToOtherBank = () => {
 
   return (
     <View style={styles.Container}>
-     <OtherBanktopbar title="Transfer to other bank" />
+      <SafeAreaView>
+           <OtherBanktopbar title="Transfer to other bank" />
+      </SafeAreaView>
+      
+  
 
       <ScrollView>
         <View style={styles.searchinput}>

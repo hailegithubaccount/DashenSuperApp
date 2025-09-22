@@ -16,19 +16,12 @@ import Colors from '../Components/Colors';
 import CustomTextInput from '../Components/TextInput';
 import CustomButton from '../Components/CustomButton';
 
-const TipSheet = ({
-  visible,
-  onClose,
-  onOpenBudget,
-  navigation,
-}) => {
+const TipSheet = ({ visible, onClose, onOpenBudget, navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
   const toggleSwitch = () => setIsEnabled(prev => !prev);
   const presetPrices = ['10.00', '25.00', '50.00', '100.00'];
-
- 
 
   return (
     <Modal
@@ -57,26 +50,22 @@ const TipSheet = ({
                     const parsedTip = inputValue
                       ? parseFloat(inputValue)
                       : null;
-                    onOpenBudget(parsedTip);
+                      onOpenBudget(parsedTip);
                   }}
                 >
                   <Text style={styles.skipBtn}>Skip</Text>
                 </TouchableOpacity>
               </View>
 
-              
-                <View style={styles.switchRow}>
-                  <Text style={{ fontSize: 16 }}>
-                    Tip selection on Transfers
-                  </Text>
-                  <Switch
-                    trackColor={{ false: '#767577', true: Colors.primary }}
-                    thumbColor={'#f4f3f4'}
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                  />
-                </View>
-              
+              <View style={styles.switchRow}>
+                <Text style={{ fontSize: 16 }}>Tip selection on Transfers</Text>
+                <Switch
+                  trackColor={{ false: '#767577', true: Colors.primary }}
+                  thumbColor={'#f4f3f4'}
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+              </View>
 
               <View style={styles.tipBox}>
                 <Text style={{ marginHorizontal: 10 }}>Custom</Text>
@@ -93,22 +82,12 @@ const TipSheet = ({
                   {presetPrices.map(price => (
                     <TouchableOpacity
                       key={price}
-                      style={[
-                        styles.priceBox,
-                       
-                      ]}
+                      style={[styles.priceBox]}
                       onPress={() => {
                         setInputValue(price);
                       }}
                     >
-                      <Text
-                        style={[
-                          styles.priceText,
-                         
-                        ]}
-                      >
-                        {price} Birr
-                      </Text>
+                      <Text style={[styles.priceText]}>{price} Birr</Text>
                     </TouchableOpacity>
                   ))}
 
@@ -134,7 +113,7 @@ export default TipSheet;
 
 const styles = StyleSheet.create({
   modalContent: {
-    marginBottom: 20,
+   
     backgroundColor: 'white',
     padding: 20,
     borderTopLeftRadius: 20,
