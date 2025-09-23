@@ -25,12 +25,10 @@ const ConfirmBaseScreen = ({
   route,
   navigation,
   imageSource,
- 
+
   showreason = false,
   showInputReason = true,
   showLabelReason = false,
- 
-  
 }) => {
   const {
     amount,
@@ -164,12 +162,14 @@ const ConfirmBaseScreen = ({
     };
 
     if (requestType === 'qr') {
+    
       navigation.navigate('PINConfirmation', paramsToPass);
-      return;
+    } else {
+     
+      setPinModalVisible(true);
     }
-
-    setPinModalVisible(true);
   };
+
   const RowItem = ({ label, value, bold = false }) => (
     <View style={styles.rowItem}>
       <Text style={[styles.firstText, bold && { fontWeight: '600' }]}>
@@ -236,22 +236,23 @@ const ConfirmBaseScreen = ({
           onPress={() => navigation.goBack()}
         />
       </View>
-
-      <PINVerification
-        visible={isPinModalVisible}
-        onClose={() => setPinModalVisible(false)}
-        onVerified={() => {
-          setPinModalVisible(false);
-          navigation.navigate('SuccessfulTransaction', {
-            amount,
-            recipientAccount,
-            recipientName,
-            isBudgetEnabled,
-            reason,
-            typedTip,
-          });
-        }}
-      />
+      {requestType !== 'qr' && (
+        <PINVerification
+          visible={isPinModalVisible}
+          onClose={() => setPinModalVisible(false)}
+          onVerified={() => {
+            setPinModalVisible(false);
+            navigation.navigate('SuccessfulTransaction', {
+              amount,
+              recipientAccount,
+              recipientName,
+              isBudgetEnabled,
+              reason,
+              typedTip,
+            });
+          }}
+        />
+      )}
 
       {/* <Modal
         isVisible={isPinModalVisible}

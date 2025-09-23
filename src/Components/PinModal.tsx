@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
   },
   pinText: { fontSize: 22, fontWeight: 'bold' },
-  showPinButton: { marginBottom: 12 },
+  showPinButton: { marginBottom: 12,},
   asharimage: { width: 44, height: 47, alignSelf: 'center', marginBottom: 12 },
   keyboardContainer: {
     width: '100%',

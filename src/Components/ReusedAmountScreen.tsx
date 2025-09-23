@@ -27,8 +27,10 @@ const AmountScreen = ({
   SelectAccount = 'Select Account',
   showSelectAccounbig = false,
   showkeypad = true,
-  title='Add Account',
-  ShowAccounforTyped=false,
+  title = 'Add Account',
+  ShowAccounforTyped = false,
+  gap=1,
+  paddingBottom=120,
 }) => {
   const [selectedAccount, setSelectedAccount] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -43,11 +45,13 @@ const AmountScreen = ({
   const [typedTip, setTypedTip] = useState<number | null>(null);
   const [amount, setAmount] = useState('');
 
-  
   const finalAmount = amount && parseFloat(amount) > 0 ? amount : scannedAmount;
 
   const handleNext = () => {
-    if (showSelectAccounbig && (!selectedAccount || selectedAccount === '00000000')) {
+    if (
+      showSelectAccounbig &&
+      (!selectedAccount || selectedAccount === '00000000')
+    ) {
       Alert.alert(
         'Invalid Account',
         'Please select a valid account before proceeding.',
@@ -64,12 +68,30 @@ const AmountScreen = ({
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <OtherBanktopbar title={title} />
 
-          <ScrollView contentContainerStyle={{ flexDirection: 'column', gap: 1 }}>
+          <ScrollView
+            contentContainerStyle={
+              [styles.contentContainerStyle,
+                {
+                  gap,
+                   paddingBottom,
+                }
+
+
+
+              ]
+              // { , gap: 1 }
+              
+
+            }
+          >
             <View>
               <View style={styles.bothtext}>
                 <Text style={styles.firsttext}>{SelectAccount}</Text>
@@ -84,7 +106,10 @@ const AmountScreen = ({
                   <Text style={styles.SelectAccount}>
                     {selectedAccount ? selectedAccount : '-Select'}
                   </Text>
-                  <Image source={require('../assets/Downicon.png')} style={styles.downicon} />
+                  <Image
+                    source={require('../assets/Downicon.png')}
+                    style={styles.downicon}
+                  />
 
                   <AccountSheet
                     visible={isModalVisible}
@@ -94,47 +119,52 @@ const AmountScreen = ({
                 </TouchableOpacity>
               )}
 
+              {ShowAccounforTyped && (
+                <View>
+                  <Text style={styles.SelectText}>Select Account</Text>
+                  <TouchableOpacity
+                    onPress={() => setIsModalVisible(true)}
+                    style={styles.borderSelectAccount}
+                  >
+                    <Text style={styles.SelectAccount}>
+                      {selectedAccount ? selectedAccount : '-Select'}
+                    </Text>
+                    <Image
+                      source={require('../assets/Downicon.png')}
+                      style={styles.downicon}
+                    />
 
-{ShowAccounforTyped &&(
-       <View>
-                    <Text style={styles.SelectText}>Select Account</Text>
-              <TouchableOpacity
-                  onPress={() => setIsModalVisible(true)}
-                  style={styles.borderSelectAccount}
-                >
-                  <Text style={styles.SelectAccount}>
-                    {selectedAccount ? selectedAccount : '-Select'}
-                  </Text>
-                  <Image source={require('../assets/Downicon.png')} style={styles.downicon} />
+                    <AccountSheet
+                      visible={isModalVisible}
+                      onClose={() => setIsModalVisible(false)}
+                      onConfirm={(account: string) =>
+                        setSelectedAccount(account)
+                      }
+                    />
+                  </TouchableOpacity>
 
-                  <AccountSheet
-                    visible={isModalVisible}
-                    onClose={() => setIsModalVisible(false)}
-                    onConfirm={(account: string) => setSelectedAccount(account)}
-                  />
-                </TouchableOpacity>
+                  <View style={styles.monay}>
+                    <Text style={{ fontSize: 16, color: Colors.third }}>
+                      Available Amount:
+                      <Text
+                        style={{ color: Colors.primary, fontWeight: 'bold' }}
+                      >
+                        {' '}
+                        ETB 20,000.00
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+              )}
 
-                <View style={styles.monay}>
-            <Text style={{ fontSize: 16, color: Colors.third }}>
-            Available Amount:
-            <Text style={{ color: Colors.primary, fontWeight: 'bold' }}>
-              {' '}
-              ETB 20,000.00
-            </Text>
-          </Text>
-        </View>
-  </View>
-      
-
-)}
-              
-              
-
-           
               <Text style={styles.amounttext}>{finalAmount} Birr</Text>
 
               {showkeypad && (
-                <NumberPad value={amount} onChange={setAmount} showDecimal={true} />
+                <NumberPad
+                  value={amount}
+                  onChange={setAmount}
+                  showDecimal={true}
+                />
               )}
             </View>
 
@@ -144,7 +174,7 @@ const AmountScreen = ({
               <TipSheet
                 visible={TipVisible}
                 onClose={() => setTipVisible(false)}
-                onOpenBudget={(value) => {
+                onOpenBudget={value => {
                   setTipVisible(false);
                   setTypedTip(value);
                   setBudgetVisible(true);
@@ -156,7 +186,7 @@ const AmountScreen = ({
                 visible={budgetVisible}
                 onClose={closeBudgetVisible}
                 navigation={navigation}
-                typedAmount={finalAmount}  
+                typedAmount={finalAmount}
                 recipient={recipient}
                 typedTip={typedTip}
               />
@@ -167,7 +197,6 @@ const AmountScreen = ({
     </KeyboardAvoidingView>
   );
 };
-
 
 export default AmountScreen;
 
@@ -206,11 +235,14 @@ const styles = StyleSheet.create({
     color: '#989898',
     fontWeight: 'bold',
   },
-   monay: { marginTop: '5%', alignSelf: 'center' },
-   SelectText: {
+  monay: { marginTop: '5%', alignSelf: 'center' },
+  SelectText: {
     textAlign: 'center',
     fontSize: 16,
     color: Colors.third,
     marginBottom: '2%',
   },
+  contentContainerStyle:{
+    flexDirection: 'column'
+  }
 });

@@ -79,10 +79,9 @@ const EnterAccountNumber = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <SafeAreaView>
-  <OtherBanktopbar title="Transfer to other bank" />
+            <OtherBanktopbar title="Transfer to other bank" />
           </SafeAreaView>
-          
-         
+
           <View style={{ backgroundColor: 'white', flex: 1 }}>
             <View style={styles.TopText}>
               <Text style={styles.FirstText}>Enter Account Number</Text>
@@ -91,7 +90,7 @@ const EnterAccountNumber = ({ navigation, route }) => {
               </Text>
             </View>
 
-            {/* Input */}
+           
             <CustomTextInput
               label={'Account Number'}
               placeholder={placeholder}
@@ -128,11 +127,10 @@ const EnterAccountNumber = ({ navigation, route }) => {
                 //         }>
 
                 onPress={() =>
-                  navigation.navigate('MiniApp', {
+                  navigation.navigate('MerchantAndTransefertoother', {
                     recipient: {
                       holder: selectedAccount.holder,
                       AccountNumber: selectedAccount.AccountNumber,
-                   
                     },
                   })
                 }

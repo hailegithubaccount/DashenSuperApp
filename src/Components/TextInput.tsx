@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 
 const CustomTextInput = ({
@@ -9,44 +9,46 @@ const CustomTextInput = ({
   onChangeText,
   keyboardType = 'default',
   showFlag = false,
+  showImage = false,
+  imageSource,
   borderRadius = 8,
-  marginTop = 15, // optional: show country flag for phone
+  marginTop = 15,
+  onPressInput, // 👈 NEW PROP
+  editable = true, // fallback if not modal
 }) => {
-  return (
-    <View
-      style={[
-        styles.container,
-        {
-          marginTop,
-        },
-      ]}
-    >
-      {label && <Text style={styles.label}>{label}</Text>}
+  const InputField = (
+    <View style={styles.inputContainer}>
+      {showFlag && (
+        <CountryFlag isoCode="ET" size={24} style={styles.flagIcon} />
+      )}
 
-      {showFlag ? (
-        <View style={styles.inputContainer}>
-          <CountryFlag isoCode="ET" size={24} style={styles.flagIcon} />
-          <TextInput
-            style={styles.textInput}
-            placeholder={placeholder}
-            value={value}
-            onChangeText={onChangeText}
-            keyboardType={keyboardType}
-          />
-        </View>
+     
+
+      <TextInput
+        style={styles.textInput}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType={keyboardType}
+        editable={onPressInput ? false : editable} // disable typing if modal
+        pointerEvents={onPressInput ? 'none' : 'auto'} // avoid keyboard opening
+      />
+
+       {showImage && imageSource && (
+        <Image source={imageSource} style={styles.leftIcon} />
+      )}
+    </View>
+  );
+
+  return (
+    <View style={[styles.container, { marginTop }]}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      {onPressInput ? (
+        <TouchableOpacity onPress={onPressInput} activeOpacity={0.7}>
+          {InputField}
+        </TouchableOpacity>
       ) : (
-        <TextInput
-          style={[
-            styles.textInputDefault,
-            {
-              borderRadius,
-            },
-          ]}
-          placeholder={placeholder}
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType={keyboardType}
-        />
+        InputField
       )}
     </View>
   );
@@ -63,26 +65,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 5,
   },
-  textInputDefault: {
-    backgroundColor: '#F8F8F8',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 14,
-    color: 'black',
-  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // borderWidth: 1,
-
     backgroundColor: '#F8F8F8',
-
     paddingHorizontal: 10,
     height: 50,
+    borderRadius: 8,
   },
   flagIcon: {
     marginRight: 10,
     borderRadius: 3,
+  },
+  leftIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+    resizeMode: 'contain',
   },
   textInput: {
     flex: 1,

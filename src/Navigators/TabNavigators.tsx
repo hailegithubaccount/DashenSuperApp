@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Alert,
   Animated,
@@ -6,37 +6,37 @@ import {
   TouchableOpacity,
   Image,
   Text,
-} from "react-native";
-import { CurvedBottomBar } from "react-native-curved-bottom-bar";
+} from 'react-native';
+import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 
 // Your screens
-import Screen1 from "../Screens/HomeScreens";
-import Screen2 from "../Screens/MiniApp";
-import Screen3 from "../Screens/ProfileScreen";
-import Screen4 from "../Screens/TransactionsScreen";
+import Screen1 from '../Screens/HomeScreens';
+import Screen2 from '../Screens/MiniApp';
+import Screen3 from '../Screens/ProfileScreen';
+import Screen4 from '../Screens/TransactionsScreen';
 
-export default function BottomTabs({navigation}) {
+export default function BottomTabs({ navigation }) {
   // Function to render image + label
   const _renderIcon = (routeName, selectedTab) => {
     let iconSource;
-    let label = "";
+    let label = '';
 
     switch (routeName) {
-      case "title1":
-        iconSource = require("../assets/home-2.png");
-        label = "Home";
+      case 'title1':
+        iconSource = require('../assets/home-2.png');
+        label = 'Home';
         break;
-      case "title2":
-        iconSource = require("../assets/nearHomeimage.png");
-        label = "Transactions";
+      case 'title2':
+        iconSource = require('../assets/nearHomeimage.png');
+        label = 'Transactions';
         break;
-      case "title3":
-        iconSource = require("../assets/miniapp.png");
-        label = "Mini Apps";
+      case 'title3':
+        iconSource = require('../assets/miniapp.png');
+        label = 'Mini Apps';
         break;
-      case "title4":
-        iconSource = require("../assets/profile.png");
-        label = "Profile";
+      case 'title4':
+        iconSource = require('../assets/profile.png');
+        label = 'Profile';
         break;
     }
 
@@ -46,13 +46,13 @@ export default function BottomTabs({navigation}) {
           source={iconSource}
           style={[
             styles.icon,
-            { tintColor: routeName === selectedTab ? "#012169" : "gray" },
+            { tintColor: routeName === selectedTab ? '#012169' : 'gray' },
           ]}
         />
         <Text
           style={[
             styles.label,
-            { color: routeName === selectedTab ? "#131C66" : "gray" },
+            { color: routeName === selectedTab ? '#131C66' : 'gray' },
           ]}
         >
           {label}
@@ -78,17 +78,16 @@ export default function BottomTabs({navigation}) {
       type="DOWN"
       style={styles.bottomBar}
       shadowStyle={styles.shawdow}
-      height={70}            // smaller bar height
-      circleWidth={80}       // 🔑 makes the curve smaller (like your image)
+      height={70}
+      circleWidth={80}
       bgColor="white"
-      
       initialRouteName="title1"
       borderTopLeftRight
       renderCircle={({ selectedTab, navigate }) => (
         <Animated.View style={styles.btnCircleUp}>
           <TouchableOpacity onPress={() => navigation.navigate('QrScreen')}>
             <Image
-              source={require("../assets/QR.png")}
+              source={require('../assets/QR.png')}
               style={{ width: 50, height: 50 }}
               resizeMode="contain"
             />
@@ -102,16 +101,16 @@ export default function BottomTabs({navigation}) {
         name="title1"
         position="LEFT"
         options={{
-    headerShown: false, // removes the top header
-  }}
+          headerShown: false,
+        }}
         component={Screen1}
       />
       <CurvedBottomBar.Screen
         name="title3"
         position="LEFT"
         options={{
-    headerShown: false, // removes the top header
-  }}
+          headerShown: false,
+        }}
         component={Screen3}
       />
 
@@ -120,17 +119,17 @@ export default function BottomTabs({navigation}) {
         name="title2"
         position="RIGHT"
         component={Screen2}
-          options={{
-    headerShown: false, // removes the top header
-  }}
+        options={{
+          headerShown: false,
+        }}
       />
       <CurvedBottomBar.Screen
         name="title4"
         position="RIGHT"
         component={Screen4}
-          options={{
+        options={{
           headerShown: false, // removes the top header
-  }}
+        }}
       />
     </CurvedBottomBar.Navigator>
   );
@@ -138,7 +137,7 @@ export default function BottomTabs({navigation}) {
 
 const styles = StyleSheet.create({
   shawdow: {
-    shadowColor: "#DDDDDD",
+    shadowColor: '#DDDDDD',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 5,
@@ -146,14 +145,14 @@ const styles = StyleSheet.create({
   bottomBar: {},
   btnCircleUp: {
     bottom: 40, // pushes QR higher above bar
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     // no background, only the QR image is shown
   },
   tabbarItem: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   icon: {
     width: 20,
@@ -162,6 +161,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    textAlign: "center",
+    textAlign: 'center',
   },
-});      
+});

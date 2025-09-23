@@ -66,7 +66,7 @@ const PINConfirmation = ({ navigation, route }) => {
       >
         <View style={styles.coverimage}>
           <Image
-            source={require('../assets/icooo.png')}
+            source={require('../assets/passwordone.png')}
             style={styles.confirmImage}
           />
         </View>
@@ -171,9 +171,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: "20%",
   },
-  confirmImage: { width: 106, height: 105 },
+  confirmImage: { width: 140, height: 105 },
   headerText: {
     textAlign: 'center',
     marginVertical: 10,

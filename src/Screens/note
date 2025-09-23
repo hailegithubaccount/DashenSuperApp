@@ -1,0 +1,65 @@
+// for budgetsheet========================================================
+
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const openModal = () => setModalVisible(true);
+  // const closeModal = () => setModalVisible(false);
+  // ========================================================================
+
+ 
+
+
+
+
+{/* for budgetsheet============================================================== */}
+      {/* <CustomButton title={'Budget'} onPress={openModal} /> */}
+      {/* <BudgetSheet
+        visible={modalVisible}
+        onClose={closeModal}
+        navigation={navigation}
+      /> */}
+      {/* ============================================================================ */}
+
+      {/* for account sheet ============================================================ */}
+
+      {/* <TouchableOpacity
+        onPress={() => setIsModalVisible(true)}
+        style={[styles.borderSelectAccount, { width, height }]}
+      >
+        <Text style={styles.SelectAccount}>
+          {selectedAccount ? selectedAccount : placeholder}
+        </Text>
+        <Image
+          source={require('../assets/Downicon.png')}
+          style={styles.downicon}
+        />
+      <AccountSheet 
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={(account: React.SetStateAction<string>) => setSelectedAccount(account)}
+       
+      />
+
+
+
+      </TouchableOpacity> */}
+
+      {/* ========================================================================================== */}
+
+      {/* <CustomButton
+        title="Open Options"
+        onPress={() => setOptionVisible(true)}
+      />
+
+      <TipSheet
+        visible={optionVisible}
+        onClose={() => setOptionVisible(false)}
+        title="Choose Amount"
+        enableSwitch
+        onOpenBudget={() => {
+          setOptionVisible(false);
+          setBudgetVisible(true); // 👈 open Budget modal separately
+        }}
+        onSelect={tip => {
+          navigation.navigate('QrWithAmount', { tip });
+        }}
+      /> */}

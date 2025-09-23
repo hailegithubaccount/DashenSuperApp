@@ -21,6 +21,7 @@ const CustomButton = ({
   layout = "row", 
 }) => {
   return (
+    
     <TouchableOpacity
       style={[
         styles.button,
@@ -32,6 +33,7 @@ const CustomButton = ({
           borderRadius,
           borderWidth: borderColor ? 1 : 0,
           borderColor: borderColor || "transparent",
+
          
         },
       ]}

@@ -1,34 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native';
+// Screens/QrPaymentScreen.js
 import React from 'react';
+import ReusablePaymentScreen from '../Components/ReusableQRpayemtpage';
 
-const MiniApp = ({ route }) => {
- 
-  const { tip } = route.params || {};
-
+const QRTipWithAmount = (props) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{tip|| "No title selected"}</Text>
+    <ReusablePaymentScreen
+      {...props}
+      title="QR Payment"
+      targetScreen="ConfrimScreenForQr"
+      showButton={false}
+      showModal={false}
+      showNextButtonWithModal={true}
+      ShowTipBox={true}
      
-    </View>
+      
+    />
   );
 };
 
-export default MiniApp;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  amount: {
-    fontSize: 18,
-    color: "gray",
-  },
-});
+export default QRTipWithAmount;

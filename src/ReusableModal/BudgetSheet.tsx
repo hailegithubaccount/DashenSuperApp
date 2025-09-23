@@ -20,6 +20,7 @@ const BudgetSheet = ({
   recipient,
   scannedAmount,
   typedTip,
+  requestType,
 }) => {
   const [budgets, setBudgets] = useState([
     {
@@ -96,19 +97,22 @@ const BudgetSheet = ({
       recipientAccount,
       isBudgetEnabled: isEnabled,
       remainingBudget: Math.max(item.amount - amountToSend, 0),
+      requestType,
+      
     });
   };
 
   const movetoconfrimwithoutbudget = () => {
     if (!amountToSend || amountToSend === 0) return;
 
-    navigation.navigate('MiniApp', {
+    navigation.navigate('ConfrimScreenForQr', {
       amount: amountToSend,
       recipientName,
       typedTip,
       recipientAccount,
       isBudgetEnabled: isEnabled,
       remainingBudget: null,
+      requestType,
     });
   };
 

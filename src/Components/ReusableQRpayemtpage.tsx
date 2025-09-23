@@ -22,7 +22,7 @@ import CustomTextInput from '../Components/TextInput';
 import NextButtonWithModal from '../Components/nextButtonwithModal';
 
 const ReusablePaymentScreen = ({
-  route = {}, // ✅ default fallback
+  route , // ✅ default fallback
   navigation,
   showModal = true,
   showButton = true,

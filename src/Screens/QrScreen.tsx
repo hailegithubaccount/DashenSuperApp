@@ -79,7 +79,7 @@ const QrScreen: React.FC = () => {
           // } 
           
           else {
-            navigation.navigate('MerchantPaymentScreen', {
+            navigation.navigate('MerchantAndTransefertoother', {
               requestType: 'qr',
               recipient: {
                 holder: recipientName,

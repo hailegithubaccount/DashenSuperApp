@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Colors from '../Components/Colors';
 
-const AccountModal = ({ visible, onClose, onConfirm, accounts }) => {
+const AccountModal = ({ visible, onClose, onConfirm, }) => {
   const [tempSelection, setTempSelection] = useState('');
    const SenderAccounts = [
     { id: '1', number: '1234 5678 9012' },

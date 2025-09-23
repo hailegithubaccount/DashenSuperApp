@@ -91,7 +91,7 @@ const TipSheet = ({ visible, onClose, onOpenBudget, navigation }) => {
                     </TouchableOpacity>
                   ))}
 
-                  {/* Budget Button */}
+                 
                 </View>
               </View>
               <CustomButton

@@ -16,8 +16,7 @@ const AccountSelector = ({
   placeholder = '000000000000',
   width = 160,
   height,
-  justifyContent="center"
- 
+  justifyContent = 'center',
 }) => {
   const SenderAccounts = [
     { id: '1', number: '1234 5678 9012' },
@@ -33,10 +32,10 @@ const AccountSelector = ({
       {/* Button */}
       <TouchableOpacity
         onPress={() => {
-         onSelect(tempSelection);
+          onSelect(tempSelection);
           setIsModalVisible(true);
         }}
-        style={[styles.borderSelectAccount, { width, height,justifyContent }]}
+        style={[styles.borderSelectAccount, { width, height, justifyContent }]}
       >
         <Text style={styles.SelectAccount}>
           {selectedAccount ? selectedAccount : placeholder}
@@ -134,13 +133,12 @@ export default AccountSelector;
 const styles = StyleSheet.create({
   borderSelectAccount: {
     flexDirection: 'row',
-    gap:10,
+    gap: 10,
     backgroundColor: '#F0F0F0',
     alignSelf: 'center',
     padding: 10,
     borderRadius: 20,
     alignItems: 'center',
-  
   },
   SelectAccount: {
     fontSize: 16,
